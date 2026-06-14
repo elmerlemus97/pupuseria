@@ -65,7 +65,7 @@
                 android:fillViewport="true"
                 android:scrollbars="horizontal">
 
-                <!-- Tabla visual del pedido: productos, precio, subtotal y cantidad. -->
+                <!-- Tabla visual del pedido: productos con precio, subtotal y cantidad. -->
                 <TableLayout
                     android:id="@+id/tableOrden"
                     android:layout_width="wrap_content"
@@ -83,11 +83,6 @@
 
                         <TextView
                             style="@style/CyberOrderHeader"
-                            android:minWidth="90dp"
-                            android:text="Precio" />
-
-                        <TextView
-                            style="@style/CyberOrderHeader"
                             android:minWidth="120dp"
                             android:text="Subtotal" />
 
@@ -100,14 +95,16 @@
                     <!-- Fila de producto: el subtotal equivale a precio por cantidad. -->
                     <TableRow>
 
-                        <TextView
-                            style="@style/CyberOrderCell"
-                            android:text="Queso" />
+                        <LinearLayout style="@style/CyberProductOrderCell">
 
-                        <TextView
-                            style="@style/CyberOrderCell"
-                            android:gravity="center"
-                            android:text="$0.50" />
+                            <TextView
+                                style="@style/CyberProductName"
+                                android:text="Queso" />
+
+                            <TextView
+                                style="@style/CyberProductPrice"
+                                android:text="$0.50" />
+                        </LinearLayout>
 
                         <TextView
                             style="@style/CyberOrderSubtotal"
@@ -133,14 +130,16 @@
                     <!-- Fila de producto: se repetira dinamicamente cuando conectemos Room. -->
                     <TableRow>
 
-                        <TextView
-                            style="@style/CyberOrderCell"
-                            android:text="Frijol con queso" />
+                        <LinearLayout style="@style/CyberProductOrderCell">
 
-                        <TextView
-                            style="@style/CyberOrderCell"
-                            android:gravity="center"
-                            android:text="$0.50" />
+                            <TextView
+                                style="@style/CyberProductName"
+                                android:text="Frijol con queso" />
+
+                            <TextView
+                                style="@style/CyberProductPrice"
+                                android:text="$0.50" />
+                        </LinearLayout>
 
                         <TextView
                             style="@style/CyberOrderSubtotal"
@@ -165,14 +164,16 @@
                     <!-- Fila de producto con cantidad cero para mostrar subtotal en $0.00. -->
                     <TableRow>
 
-                        <TextView
-                            style="@style/CyberOrderCell"
-                            android:text="Revueltas" />
+                        <LinearLayout style="@style/CyberProductOrderCell">
 
-                        <TextView
-                            style="@style/CyberOrderCell"
-                            android:gravity="center"
-                            android:text="$0.60" />
+                            <TextView
+                                style="@style/CyberProductName"
+                                android:text="Revueltas" />
+
+                            <TextView
+                                style="@style/CyberProductPrice"
+                                android:text="$0.60" />
+                        </LinearLayout>
 
                         <TextView
                             style="@style/CyberOrderSubtotal"
@@ -197,14 +198,16 @@
                     <!-- Fila de producto de ejemplo para el catalogo inicial. -->
                     <TableRow>
 
-                        <TextView
-                            style="@style/CyberOrderCell"
-                            android:text="Loroco con queso" />
+                        <LinearLayout style="@style/CyberProductOrderCell">
 
-                        <TextView
-                            style="@style/CyberOrderCell"
-                            android:gravity="center"
-                            android:text="$0.75" />
+                            <TextView
+                                style="@style/CyberProductName"
+                                android:text="Loroco con queso" />
+
+                            <TextView
+                                style="@style/CyberProductPrice"
+                                android:text="$0.75" />
+                        </LinearLayout>
 
                         <TextView
                             style="@style/CyberOrderSubtotal"
@@ -229,14 +232,16 @@
                     <!-- Fila de producto de ejemplo para el catalogo inicial. -->
                     <TableRow>
 
-                        <TextView
-                            style="@style/CyberOrderCell"
-                            android:text="Chicharron" />
+                        <LinearLayout style="@style/CyberProductOrderCell">
 
-                        <TextView
-                            style="@style/CyberOrderCell"
-                            android:gravity="center"
-                            android:text="$0.65" />
+                            <TextView
+                                style="@style/CyberProductName"
+                                android:text="Chicharron" />
+
+                            <TextView
+                                style="@style/CyberProductPrice"
+                                android:text="$0.65" />
+                        </LinearLayout>
 
                         <TextView
                             style="@style/CyberOrderSubtotal"
