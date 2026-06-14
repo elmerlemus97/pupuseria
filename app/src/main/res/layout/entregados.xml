@@ -5,15 +5,414 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_cyberpunk"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <!-- Linea neon superior: verde para diferenciar entregados de pendientes. -->
+    <View
+        android:id="@+id/topNeonLine"
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:background="#FF00FF99"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ScrollView
+        android:id="@+id/deliveredScroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:padding="16dp"
+        app:layout_constraintBottom_toTopOf="@id/salesSummaryPanel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topNeonLine">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Encabezado de historial de pedidos entregados. -->
+            <TextView
+                android:id="@+id/txtDeliveredTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.04"
+                android:text="PEDIDOS ENTREGADOS"
+                android:textColor="#FF00FF99"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtDeliveredSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Historial de ventas finalizadas"
+                android:textColor="@color/cyber_text_muted"
+                android:textSize="13sp" />
+
+            <!-- Buscador visual; luego filtrara por nombre_cliente en pedidos entregados. -->
+            <LinearLayout
+                android:id="@+id/searchDeliveredPanel"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_cyber_input"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="Buscar"
+                    android:src="@drawable/ic_search"
+                    android:tint="#FF00FF99" />
+
+                <EditText
+                    android:id="@+id/edtBuscarClienteEntregado"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:hint="Nombre del cliente"
+                    android:inputType="textCapWords"
+                    android:maxLines="1"
+                    android:textColor="@color/cyber_text"
+                    android:textColorHint="@color/cyber_text_muted"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <!-- Lista visual; despues sera reemplazada por RecyclerView con datos Room. -->
+            <LinearLayout
+                android:id="@+id/listaPedidosEntregados"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
+
+                <!-- Tarjeta de pedido entregado con la misma estructura de pendientes. -->
+                <LinearLayout
+                    android:id="@+id/cardEntregadoAna"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_delivered_card"
+                    android:elevation="8dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtClienteEntregadoAna"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ana Martinez"
+                        android:textColor="@color/cyber_cyan"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtTelefonoEntregadoAna"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Celular: 7070-7070"
+                        android:textColor="@color/cyber_text_muted"
+                        android:textSize="13sp" />
+
+                    <TableLayout
+                        android:id="@+id/tableEntregadoAna"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:stretchColumns="0">
+
+                        <TableRow>
+                            <TextView
+                                style="@style/CyberPendingHeader"
+                                android:text="Pedido" />
+
+                            <TextView
+                                style="@style/CyberPendingHeader"
+                                android:text="Cant." />
+
+                            <TextView
+                                style="@style/CyberPendingHeader"
+                                android:text="Subtotal" />
+                        </TableRow>
+
+                        <TableRow>
+                            <TextView
+                                style="@style/CyberPendingCell"
+                                android:text="Queso" />
+
+                            <TextView
+                                style="@style/CyberPendingCellCenter"
+                                android:text="2" />
+
+                            <TextView
+                                style="@style/CyberPendingCellCenter"
+                                android:text="$1.00" />
+                        </TableRow>
+
+                        <TableRow>
+                            <TextView
+                                style="@style/CyberPendingCell"
+                                android:text="Loroco con queso" />
+
+                            <TextView
+                                style="@style/CyberPendingCellCenter"
+                                android:text="2" />
+
+                            <TextView
+                                style="@style/CyberPendingCellCenter"
+                                android:text="$1.50" />
+                        </TableRow>
+
+                        <TableRow>
+                            <TextView
+                                style="@style/CyberPendingCell"
+                                android:text="Chicharron" />
+
+                            <TextView
+                                style="@style/CyberPendingCellCenter"
+                                android:text="1" />
+
+                            <TextView
+                                style="@style/CyberPendingCellCenter"
+                                android:text="$0.65" />
+                        </TableRow>
+                    </TableLayout>
+
+                    <TextView
+                        android:id="@+id/txtTotalEntregadoAna"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:text="Total: $3.15"
+                        android:textColor="@color/cyber_yellow"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtFechaEntregadoAna"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/bg_pending_meta"
+                        android:text="Fecha: 14-06-2026  11:15"
+                        android:textColor="@color/cyber_text"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/txtHoraEntregadoAna"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_pending_meta"
+                        android:text="Entregado a las: 11:24"
+                        android:textColor="@color/cyber_text"
+                        android:textSize="12sp" />
+
+                    <LinearLayout
+                        android:id="@+id/statusEntregadoAna"
+                        android:layout_width="wrap_content"
+                        android:layout_height="34dp"
+                        android:layout_marginTop="14dp"
+                        android:background="@drawable/bg_delivered_status"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Delivery"
+                            android:textColor="#FF00FF99"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="Entregado"
+                            android:textColor="@color/cyber_yellow"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btnRestaurarAna"
+                        android:layout_width="150dp"
+                        android:layout_height="46dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/bg_button_outline_yellow"
+                        android:text="RESTAURAR"
+                        android:textColor="@color/cyber_yellow"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <!-- Segunda tarjeta para representar ventas entregadas ordenadas. -->
+                <LinearLayout
+                    android:id="@+id/cardEntregadoCarlos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:background="@drawable/bg_delivered_card"
+                    android:elevation="8dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtClienteEntregadoCarlos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Carlos Perez"
+                        android:textColor="@color/cyber_cyan"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtTelefonoEntregadoCarlos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Celular: 5555-1212"
+                        android:textColor="@color/cyber_text_muted"
+                        android:textSize="13sp" />
+
+                    <TableLayout
+                        android:id="@+id/tableEntregadoCarlos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:stretchColumns="0">
+
+                        <TableRow>
+                            <TextView
+                                style="@style/CyberPendingHeader"
+                                android:text="Pedido" />
+
+                            <TextView
+                                style="@style/CyberPendingHeader"
+                                android:text="Cant." />
+
+                            <TextView
+                                style="@style/CyberPendingHeader"
+                                android:text="Subtotal" />
+                        </TableRow>
+
+                        <TableRow>
+                            <TextView
+                                style="@style/CyberPendingCell"
+                                android:text="Frijol con queso" />
+
+                            <TextView
+                                style="@style/CyberPendingCellCenter"
+                                android:text="3" />
+
+                            <TextView
+                                style="@style/CyberPendingCellCenter"
+                                android:text="$1.50" />
+                        </TableRow>
+
+                        <TableRow>
+                            <TextView
+                                style="@style/CyberPendingCell"
+                                android:text="Revueltas" />
+
+                            <TextView
+                                style="@style/CyberPendingCellCenter"
+                                android:text="2" />
+
+                            <TextView
+                                style="@style/CyberPendingCellCenter"
+                                android:text="$1.20" />
+                        </TableRow>
+                    </TableLayout>
+
+                    <TextView
+                        android:id="@+id/txtTotalEntregadoCarlos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:text="Total: $2.70"
+                        android:textColor="@color/cyber_yellow"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtFechaEntregadoCarlos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/bg_pending_meta"
+                        android:text="Fecha: 14-06-2026  11:40"
+                        android:textColor="@color/cyber_text"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/txtHoraEntregadoCarlos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_pending_meta"
+                        android:text="Entregado a las: 11:55"
+                        android:textColor="@color/cyber_text"
+                        android:textSize="12sp" />
+
+                    <Button
+                        android:id="@+id/btnRestaurarCarlos"
+                        android:layout_width="150dp"
+                        android:layout_height="46dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/bg_button_outline_yellow"
+                        android:text="RESTAURAR"
+                        android:textColor="@color/cyber_yellow"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Pie fijo: contador de ventas entregadas. -->
+    <LinearLayout
+        android:id="@+id/salesSummaryPanel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_sales_summary"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/txtVentasLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Total vendido"
+            android:textColor="@color/cyber_text_muted"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtTotalVendido"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$5.85"
+            android:textColor="#FF00FF99"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
