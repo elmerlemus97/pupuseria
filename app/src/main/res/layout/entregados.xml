@@ -18,6 +18,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <include
+        android:id="@+id/navigation"
+        layout="@layout/layout_navigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topNeonLine" />
+
     <ScrollView
         android:id="@+id/deliveredScroll"
         android:layout_width="0dp"
@@ -27,7 +36,7 @@
         app:layout_constraintBottom_toTopOf="@id/salesSummaryPanel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topNeonLine">
+        app:layout_constraintTop_toBottomOf="@id/navigation">
 
         <LinearLayout
             android:layout_width="match_parent"
