@@ -184,12 +184,7 @@
 
                         <TextView
                             style="@style/CyberTableHeader"
-                            android:minWidth="100dp"
-                            android:text="Estado" />
-
-                        <TextView
-                            style="@style/CyberTableHeader"
-                            android:minWidth="280dp"
+                            android:minWidth="150dp"
                             android:text="Acciones" />
                     </TableRow>
 
@@ -203,23 +198,19 @@
                             style="@style/CyberTableCell"
                             android:text="$0.50" />
 
-                        <TextView
-                            style="@style/CyberTableCell"
-                            android:text="Activo" />
-
                         <LinearLayout style="@style/CyberActionCell">
 
                             <Button
                                 style="@style/CyberEditButton"
-                                android:text="Editar" />
+                                android:text="E" />
 
                             <Button
                                 style="@style/CyberDeleteButton"
-                                android:text="Eliminar" />
+                                android:text="X" />
 
                             <Button
                                 style="@style/CyberToggleButton"
-                                android:text="Desactivar" />
+                                android:text="OFF" />
                         </LinearLayout>
                     </TableRow>
 
@@ -233,53 +224,45 @@
                             style="@style/CyberTableCell"
                             android:text="$0.50" />
 
-                        <TextView
-                            style="@style/CyberTableCell"
-                            android:text="Activo" />
-
                         <LinearLayout style="@style/CyberActionCell">
 
                             <Button
                                 style="@style/CyberEditButton"
-                                android:text="Editar" />
+                                android:text="E" />
 
                             <Button
                                 style="@style/CyberDeleteButton"
-                                android:text="Eliminar" />
+                                android:text="X" />
 
                             <Button
                                 style="@style/CyberToggleButton"
-                                android:text="Desactivar" />
+                                android:text="OFF" />
                         </LinearLayout>
                     </TableRow>
 
                     <TableRow>
 
                         <TextView
-                            style="@style/CyberTableCell"
+                            style="@style/CyberTableCellInactive"
                             android:text="Revueltas" />
 
                         <TextView
-                            style="@style/CyberTableCell"
+                            style="@style/CyberTableCellInactive"
                             android:text="$0.60" />
 
-                        <TextView
-                            style="@style/CyberTableCell"
-                            android:text="Activo" />
-
-                        <LinearLayout style="@style/CyberActionCell">
+                        <LinearLayout style="@style/CyberActionCellInactive">
 
                             <Button
                                 style="@style/CyberEditButton"
-                                android:text="Editar" />
+                                android:text="E" />
 
                             <Button
                                 style="@style/CyberDeleteButton"
-                                android:text="Eliminar" />
+                                android:text="X" />
 
                             <Button
                                 style="@style/CyberToggleButton"
-                                android:text="Desactivar" />
+                                android:text="ON" />
                         </LinearLayout>
                     </TableRow>
 
@@ -293,23 +276,19 @@
                             style="@style/CyberTableCell"
                             android:text="$0.75" />
 
-                        <TextView
-                            style="@style/CyberTableCell"
-                            android:text="Activo" />
-
                         <LinearLayout style="@style/CyberActionCell">
 
                             <Button
                                 style="@style/CyberEditButton"
-                                android:text="Editar" />
+                                android:text="E" />
 
                             <Button
                                 style="@style/CyberDeleteButton"
-                                android:text="Eliminar" />
+                                android:text="X" />
 
                             <Button
                                 style="@style/CyberToggleButton"
-                                android:text="Desactivar" />
+                                android:text="OFF" />
                         </LinearLayout>
                     </TableRow>
 
@@ -323,23 +302,19 @@
                             style="@style/CyberTableCell"
                             android:text="$0.65" />
 
-                        <TextView
-                            style="@style/CyberTableCell"
-                            android:text="Activo" />
-
                         <LinearLayout style="@style/CyberActionCell">
 
                             <Button
                                 style="@style/CyberEditButton"
-                                android:text="Editar" />
+                                android:text="E" />
 
                             <Button
                                 style="@style/CyberDeleteButton"
-                                android:text="Eliminar" />
+                                android:text="X" />
 
                             <Button
                                 style="@style/CyberToggleButton"
-                                android:text="Desactivar" />
+                                android:text="OFF" />
                         </LinearLayout>
                     </TableRow>
                 </TableLayout>

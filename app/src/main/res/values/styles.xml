@@ -25,7 +25,7 @@
     </style>
 
     <style name="CyberActionCell">
-        <item name="android:layout_width">280dp</item>
+        <item name="android:layout_width">150dp</item>
         <item name="android:layout_height">54dp</item>
         <item name="android:background">@drawable/bg_table_cell</item>
         <item name="android:gravity">center_vertical</item>
@@ -34,17 +34,26 @@
         <item name="android:paddingEnd">8dp</item>
     </style>
 
+    <style name="CyberActionCellInactive" parent="CyberActionCell">
+        <item name="android:background">@drawable/bg_table_cell_inactive</item>
+    </style>
+
     <style name="CyberActionButton">
-        <item name="android:layout_width">84dp</item>
-        <item name="android:layout_height">38dp</item>
+        <item name="android:layout_width">42dp</item>
+        <item name="android:layout_height">36dp</item>
         <item name="android:layout_marginEnd">6dp</item>
         <item name="android:minWidth">0dp</item>
         <item name="android:minHeight">0dp</item>
-        <item name="android:paddingStart">4dp</item>
-        <item name="android:paddingEnd">4dp</item>
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:paddingEnd">0dp</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">11sp</item>
+        <item name="android:textSize">12sp</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="CyberTableCellInactive" parent="CyberTableCell">
+        <item name="android:background">@drawable/bg_table_cell_inactive</item>
+        <item name="android:textColor">#FFFFC9D3</item>
     </style>
 
     <style name="CyberEditButton" parent="CyberActionButton">
