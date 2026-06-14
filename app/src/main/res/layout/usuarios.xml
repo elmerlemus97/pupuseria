@@ -18,6 +18,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Barra de navegación compartida -->
+    <include
+        android:id="@+id/navigation"
+        layout="@layout/layout_navigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topNeonLine" />
+
     <ScrollView
         android:id="@+id/usersScroll"
         android:layout_width="0dp"
@@ -30,7 +40,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topNeonLine">
+        app:layout_constraintTop_toBottomOf="@id/navigation">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -116,19 +126,17 @@
                         android:textColorHint="@color/cyber_text_muted"
                         android:textSize="15sp" />
 
-                    <Button
+                    <!-- Botón para agregar nuevo usuario con icono -->
+                    <ImageButton
                         android:id="@+id/btnAgregarUsuario"
                         android:layout_width="52dp"
                         android:layout_height="52dp"
                         android:layout_marginStart="10dp"
                         android:background="@drawable/bg_cyber_button"
-                        android:minWidth="0dp"
-                        android:minHeight="0dp"
-                        android:padding="0dp"
-                        android:text="+"
-                        android:textColor="@color/black"
-                        android:textSize="26sp"
-                        android:textStyle="bold" />
+                        android:contentDescription="Agregar Usuario"
+                        android:padding="12dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_add" />
                 </LinearLayout>
 
                 <TextView
@@ -235,17 +243,30 @@
 
                         <LinearLayout style="@style/CyberActionCell">
 
-                            <Button
+                            <!-- Acciones con iconos representativos -->
+                            <ImageButton
                                 style="@style/CyberEditButton"
-                                android:text="E" />
+                                android:contentDescription="Editar Usuario"
+                                android:padding="8dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_edit"
+                                app:tint="@color/cyber_cyan" />
 
-                            <Button
+                            <ImageButton
                                 style="@style/CyberDeleteButton"
-                                android:text="X" />
+                                android:contentDescription="Eliminar Usuario"
+                                android:padding="8dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_delete"
+                                app:tint="@color/cyber_magenta" />
 
-                            <Button
+                            <ImageButton
                                 style="@style/CyberToggleButton"
-                                android:text="OFF" />
+                                android:contentDescription="Cambiar Estado"
+                                android:padding="8dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_power"
+                                app:tint="@color/cyber_yellow" />
                         </LinearLayout>
                     </TableRow>
 
@@ -261,17 +282,30 @@
 
                         <LinearLayout style="@style/CyberActionCell">
 
-                            <Button
+                            <!-- Acciones con iconos representativos -->
+                            <ImageButton
                                 style="@style/CyberEditButton"
-                                android:text="E" />
+                                android:contentDescription="Editar Usuario"
+                                android:padding="8dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_edit"
+                                app:tint="@color/cyber_cyan" />
 
-                            <Button
+                            <ImageButton
                                 style="@style/CyberDeleteButton"
-                                android:text="X" />
+                                android:contentDescription="Eliminar Usuario"
+                                android:padding="8dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_delete"
+                                app:tint="@color/cyber_magenta" />
 
-                            <Button
+                            <ImageButton
                                 style="@style/CyberToggleButton"
-                                android:text="OFF" />
+                                android:contentDescription="Cambiar Estado"
+                                android:padding="8dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_power"
+                                app:tint="@color/cyber_yellow" />
                         </LinearLayout>
                     </TableRow>
 
@@ -288,17 +322,30 @@
 
                         <LinearLayout style="@style/CyberActionCellInactive">
 
-                            <Button
+                            <!-- Acciones para usuario inactivo -->
+                            <ImageButton
                                 style="@style/CyberEditButton"
-                                android:text="E" />
+                                android:contentDescription="Editar Usuario"
+                                android:padding="8dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_edit"
+                                app:tint="@color/cyber_cyan" />
 
-                            <Button
+                            <ImageButton
                                 style="@style/CyberDeleteButton"
-                                android:text="X" />
+                                android:contentDescription="Eliminar Usuario"
+                                android:padding="8dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_delete"
+                                app:tint="@color/cyber_magenta" />
 
-                            <Button
+                            <ImageButton
                                 style="@style/CyberToggleButton"
-                                android:text="ON" />
+                                android:contentDescription="Activar Usuario"
+                                android:padding="8dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_power"
+                                app:tint="@color/cyber_yellow" />
                         </LinearLayout>
                     </TableRow>
                 </TableLayout>

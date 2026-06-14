@@ -17,6 +17,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <include
+        android:id="@+id/navigation"
+        layout="@layout/layout_navigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topNeonLine" />
+
     <ScrollView
         android:id="@+id/orderScroll"
         android:layout_width="0dp"
@@ -29,7 +38,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topNeonLine">
+        app:layout_constraintTop_toBottomOf="@id/navigation">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -108,7 +117,7 @@
 
                         <TextView
                             style="@style/CyberOrderSubtotal"
-                            android:text="$1.00" />
+                            android:text="$0.00" />
 
                         <LinearLayout style="@style/CyberQuantityCell">
 
@@ -119,7 +128,7 @@
 
                             <TextView
                                 style="@style/CyberQtyValue"
-                                android:text="2" />
+                                android:text="0" />
 
                             <Button
                                 style="@style/CyberQtyButton"
@@ -143,7 +152,7 @@
 
                         <TextView
                             style="@style/CyberOrderSubtotal"
-                            android:text="$0.50" />
+                            android:text="$0.00" />
 
                         <LinearLayout style="@style/CyberQuantityCell">
 
@@ -153,7 +162,7 @@
 
                             <TextView
                                 style="@style/CyberQtyValue"
-                                android:text="1" />
+                                android:text="0" />
 
                             <Button
                                 style="@style/CyberQtyButton"
@@ -211,7 +220,7 @@
 
                         <TextView
                             style="@style/CyberOrderSubtotal"
-                            android:text="$1.50" />
+                            android:text="$0.00" />
 
                         <LinearLayout style="@style/CyberQuantityCell">
 
@@ -221,7 +230,7 @@
 
                             <TextView
                                 style="@style/CyberQtyValue"
-                                android:text="2" />
+                                android:text="0" />
 
                             <Button
                                 style="@style/CyberQtyButton"
@@ -245,7 +254,7 @@
 
                         <TextView
                             style="@style/CyberOrderSubtotal"
-                            android:text="$0.65" />
+                            android:text="0" />
 
                         <LinearLayout style="@style/CyberQuantityCell">
 
@@ -255,7 +264,7 @@
 
                             <TextView
                                 style="@style/CyberQtyValue"
-                                android:text="1" />
+                                android:text="0" />
 
                             <Button
                                 style="@style/CyberQtyButton"
@@ -295,7 +304,7 @@
                     android:layout_marginEnd="14dp"
                     android:layout_weight="1.2"
                     android:gravity="center"
-                    android:text="TOTAL: $3.65"
+                    android:text="TOTAL: $0.00"
                     android:textColor="@color/cyber_yellow"
                     android:textSize="20sp"
                     android:textStyle="bold" />

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fondo para el diálogo de confirmación: Panel oscuro con borde amarillo neón -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#FF090B18" /> <!-- Fondo muy oscuro -->
+    <stroke
+        android:width="1.5dp"
+        android:color="@color/cyber_yellow" /> <!-- Borde amarillo como en la imagen -->
+    <corners android:radius="12dp" />
+</shape>

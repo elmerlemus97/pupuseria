@@ -17,6 +17,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <include
+        android:id="@+id/navigation"
+        layout="@layout/layout_navigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topNeonLine" />
+
     <ScrollView
         android:id="@+id/menuScroll"
         android:layout_width="0dp"
@@ -29,7 +38,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topNeonLine">
+        app:layout_constraintTop_toBottomOf="@id/navigation">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -113,43 +122,56 @@
                         android:textColorHint="@color/cyber_text_muted"
                         android:textSize="15sp" />
 
-                    <Button
+                    <ImageButton
                         android:id="@+id/btnAgregarPupusa"
                         android:layout_width="52dp"
                         android:layout_height="52dp"
                         android:layout_marginStart="10dp"
                         android:background="@drawable/bg_cyber_button"
-                        android:minWidth="0dp"
-                        android:minHeight="0dp"
-                        android:padding="0dp"
-                        android:text="+"
-                        android:textColor="@color/black"
-                        android:textSize="26sp"
-                        android:textStyle="bold" />
+                        android:contentDescription="Agregar"
+                        android:padding="12dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_add" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/txtEstadoDefault"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/bg_status_active"
-                    android:paddingStart="14dp"
-                    android:paddingTop="6dp"
-                    android:paddingEnd="14dp"
-                    android:paddingBottom="6dp"
-                    android:text="Estado por defecto: Activo"
-                    android:textColor="@color/cyber_cyan"
-                    android:textSize="13sp"
-                    android:textStyle="bold" />
+            </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/searchBox"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/bg_cyber_input"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp">
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/ic_search"
+                    app:tint="@color/cyber_cyan" />
+
+                <EditText
+                    android:id="@+id/edtBuscarProducto"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:hint="Buscar pupusa por nombre..."
+                    android:inputType="text"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:textColor="@color/cyber_text"
+                    android:textColorHint="@color/cyber_text_muted"
+                    android:textSize="15sp" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/txtTablaTitulo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="22dp"
+                android:layout_marginTop="20dp"
                 android:text="Pupusas registradas"
                 android:textColor="@color/cyber_text"
                 android:textSize="18sp"
@@ -200,17 +222,29 @@
 
                         <LinearLayout style="@style/CyberActionCell">
 
-                            <Button
+                            <ImageButton
                                 style="@style/CyberEditButton"
-                                android:text="E" />
+                                android:contentDescription="Editar"
+                                android:padding="8dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_edit"
+                                app:tint="@color/cyber_cyan" />
 
-                            <Button
+                            <ImageButton
                                 style="@style/CyberDeleteButton"
-                                android:text="X" />
+                                android:contentDescription="Eliminar"
+                                android:padding="8dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_delete"
+                                app:tint="@color/cyber_magenta" />
 
-                            <Button
+                            <ImageButton
                                 style="@style/CyberToggleButton"
-                                android:text="OFF" />
+                                android:contentDescription="Estado"
+                                android:padding="8dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_power"
+                                app:tint="@color/cyber_yellow" />
                         </LinearLayout>
                     </TableRow>
 
@@ -226,17 +260,29 @@
 
                         <LinearLayout style="@style/CyberActionCell">
 
-                            <Button
+                            <ImageButton
                                 style="@style/CyberEditButton"
-                                android:text="E" />
+                                android:contentDescription="Editar"
+                                android:padding="8dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_edit"
+                                app:tint="@color/cyber_cyan" />
 
-                            <Button
+                            <ImageButton
                                 style="@style/CyberDeleteButton"
-                                android:text="X" />
+                                android:contentDescription="Eliminar"
+                                android:padding="8dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_delete"
+                                app:tint="@color/cyber_magenta" />
 
-                            <Button
+                            <ImageButton
                                 style="@style/CyberToggleButton"
-                                android:text="OFF" />
+                                android:contentDescription="Estado"
+                                android:padding="8dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_power"
+                                app:tint="@color/cyber_yellow" />
                         </LinearLayout>
                     </TableRow>
 
@@ -252,17 +298,29 @@
 
                         <LinearLayout style="@style/CyberActionCellInactive">
 
-                            <Button
+                            <ImageButton
                                 style="@style/CyberEditButton"
-                                android:text="E" />
+                                android:contentDescription="Editar"
+                                android:padding="8dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_edit"
+                                app:tint="@color/cyber_cyan" />
 
-                            <Button
+                            <ImageButton
                                 style="@style/CyberDeleteButton"
-                                android:text="X" />
+                                android:contentDescription="Eliminar"
+                                android:padding="8dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_delete"
+                                app:tint="@color/cyber_magenta" />
 
-                            <Button
+                            <ImageButton
                                 style="@style/CyberToggleButton"
-                                android:text="ON" />
+                                android:contentDescription="Estado"
+                                android:padding="8dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_power"
+                                app:tint="@color/cyber_yellow" />
                         </LinearLayout>
                     </TableRow>
 
@@ -278,17 +336,29 @@
 
                         <LinearLayout style="@style/CyberActionCell">
 
-                            <Button
+                            <ImageButton
                                 style="@style/CyberEditButton"
-                                android:text="E" />
+                                android:contentDescription="Editar"
+                                android:padding="8dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_edit"
+                                app:tint="@color/cyber_cyan" />
 
-                            <Button
+                            <ImageButton
                                 style="@style/CyberDeleteButton"
-                                android:text="X" />
+                                android:contentDescription="Eliminar"
+                                android:padding="8dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_delete"
+                                app:tint="@color/cyber_magenta" />
 
-                            <Button
+                            <ImageButton
                                 style="@style/CyberToggleButton"
-                                android:text="OFF" />
+                                android:contentDescription="Estado"
+                                android:padding="8dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_power"
+                                app:tint="@color/cyber_yellow" />
                         </LinearLayout>
                     </TableRow>
 
@@ -304,17 +374,29 @@
 
                         <LinearLayout style="@style/CyberActionCell">
 
-                            <Button
+                            <ImageButton
                                 style="@style/CyberEditButton"
-                                android:text="E" />
+                                android:contentDescription="Editar"
+                                android:padding="8dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_edit"
+                                app:tint="@color/cyber_cyan" />
 
-                            <Button
+                            <ImageButton
                                 style="@style/CyberDeleteButton"
-                                android:text="X" />
+                                android:contentDescription="Eliminar"
+                                android:padding="8dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_delete"
+                                app:tint="@color/cyber_magenta" />
 
-                            <Button
+                            <ImageButton
                                 style="@style/CyberToggleButton"
-                                android:text="OFF" />
+                                android:contentDescription="Estado"
+                                android:padding="8dp"
+                                android:scaleType="fitCenter"
+                                android:src="@drawable/ic_power"
+                                app:tint="@color/cyber_yellow" />
                         </LinearLayout>
                     </TableRow>
                 </TableLayout>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Barra de navegación superior personalizada con estilo Cyberpunk -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/navBar"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@color/cyber_panel"
+    android:orientation="horizontal"
+    android:elevation="4dp">
+
+    <!-- Opción: Menú / Productos -->
+    <LinearLayout
+        android:id="@+id/navMenu"
+        style="@style/CyberNavButton">
+        <ImageView
+            style="@style/CyberNavIcon"
+            android:src="@drawable/ic_nav_menu" />
+        <TextView
+            style="@style/CyberNavText"
+            android:text="Menú" />
+    </LinearLayout>
+
+    <!-- Opción: Ordenar -->
+    <LinearLayout
+        android:id="@+id/navOrder"
+        style="@style/CyberNavButton">
+        <ImageView
+            style="@style/CyberNavIcon"
+            android:src="@drawable/ic_nav_order" />
+        <TextView
+            style="@style/CyberNavText"
+            android:text="Ordenar" />
+    </LinearLayout>
+
+    <!-- Opción: Pendientes -->
+    <LinearLayout
+        android:id="@+id/navPending"
+        style="@style/CyberNavButton">
+        <ImageView
+            style="@style/CyberNavIcon"
+            android:src="@drawable/ic_nav_pending" />
+        <TextView
+            style="@style/CyberNavText"
+            android:text="Pendientes" />
+    </LinearLayout>
+
+    <!-- Opción: Entregados -->
+    <LinearLayout
+        android:id="@+id/navDelivered"
+        style="@style/CyberNavButton">
+        <ImageView
+            style="@style/CyberNavIcon"
+            android:src="@drawable/ic_nav_delivered" />
+        <TextView
+            style="@style/CyberNavText"
+            android:text="Historial" />
+    </LinearLayout>
+
+</LinearLayout>
