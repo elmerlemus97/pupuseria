@@ -36,9 +36,16 @@ public interface PedidoDao {
     @Query("SELECT * FROM Pedido WHERE id_pedido = :idPedido LIMIT 1")
     PedidoConDetalles obtenerPedidoConDetalles(int idPedido);
 
+    @Transaction
+    @Query("SELECT * FROM Pedido WHERE estado_entrega = :estadoEntrega ORDER BY id_pedido DESC")
+    List<PedidoConDetalles> listarConDetallesPorEstado(int estadoEntrega);
+
     @Query("UPDATE Pedido SET total = :total WHERE id_pedido = :idPedido")
     void actualizarTotal(int idPedido, double total);
 
     @Query("UPDATE Pedido SET estado_entrega = :estadoEntrega WHERE id_pedido = :idPedido")
     void cambiarEstadoEntrega(int idPedido, int estadoEntrega);
+
+    @Query("DELETE FROM Pedido WHERE id_pedido = :idPedido")
+    void eliminarPorId(int idPedido);
 }

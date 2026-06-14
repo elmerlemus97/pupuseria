@@ -26,4 +26,7 @@ public interface ClienteDao {
 
     @Query("SELECT * FROM Cliente WHERE id_cliente = :idCliente LIMIT 1")
     Cliente buscarPorId(int idCliente);
+
+    @Query("SELECT * FROM Cliente WHERE telefono = :telefono LIMIT 1")
+    Cliente buscarPorTelefono(String telefono);
 }

@@ -32,4 +32,10 @@ public interface UsuarioDao {
 
     @Query("UPDATE Usuarios SET estado = :estado WHERE id_usuario = :idUsuario")
     void cambiarEstado(int idUsuario, int estado);
+
+    @Query("SELECT COUNT(*) FROM Usuarios")
+    int contar();
+
+    @Query("SELECT COUNT(*) FROM Usuarios WHERE username = :username")
+    int contarPorUsername(String username);
 }

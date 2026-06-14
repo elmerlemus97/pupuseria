@@ -84,6 +84,9 @@ public abstract class AppDatabase extends RoomDatabase {
                 productoDao.insertar(new Producto("Revueltas", 0.60, 1));
                 productoDao.insertar(new Producto("Loroco con queso", 0.75, 1));
                 productoDao.insertar(new Producto("Chicharron", 0.65, 1));
+
+                // Usuario inicial para pruebas: username admin, password admin, estado activo.
+                INSTANCE.usuarioDao().insertar(new Usuario("admin", "admin", 1));
             });
         }
     };

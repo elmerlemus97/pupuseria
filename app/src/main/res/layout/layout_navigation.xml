@@ -56,4 +56,16 @@
             android:text="Historial" />
     </LinearLayout>
 
+    <!-- Opcion: Usuarios / aprobacion de accesos -->
+    <LinearLayout
+        android:id="@+id/navUsers"
+        style="@style/CyberNavButton">
+        <ImageView
+            style="@style/CyberNavIcon"
+            android:src="@drawable/ic_power" />
+        <TextView
+            style="@style/CyberNavText"
+            android:text="Usuarios" />
+    </LinearLayout>
+
 </LinearLayout>
