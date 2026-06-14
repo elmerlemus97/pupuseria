@@ -124,17 +124,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void applyInsets() {
-        // Ajusta el padding para que el contenido no choque con barras del sistema.
+        // Buscamos el contenedor raíz de la pantalla actual (id="main")
         View main = findViewById(R.id.main);
-        if (main == null) {
-            return;
-        }
+        if (main == null) return;
 
+        // Configuramos el escuchador de Insets para manejar el espacio de las barras del sistema
         ViewCompat.setOnApplyWindowInsetsListener(main, (v, insets) -> {
+            // Obtenemos el tamaño de las barras (estado arriba, navegación abajo)
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            
+            // Aplicamos el padding al contenedor principal para "empujar" el contenido hacia adentro
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+            
+            // IMPORTANTE: Retornamos CONSUMED para que el sistema sepa que ya nos encargamos del espacio
+            // y no intente reajustar la vista por su cuenta al interactuar con formularios.
+            return WindowInsetsCompat.CONSUMED;
         });
+
+        // Forzamos al sistema a aplicar los márgenes de inmediato para evitar el "salto" visual
+        main.requestApplyInsets();
     }
 
     private void setupNavigation() {
@@ -570,9 +578,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void renderOrden() {
         // Redibuja la tabla de la orden y recalcula subtotales/total.
-        TableLayout table = findViewById(R.id.tableOrden);
+        LinearLayout table = findViewById(R.id.tableOrden);
         if (table == null) return;
-        clearTableBody(table);
+        clearLinearBody(table);
 
         double total = 0;
         for (Producto producto : productosOrden) {
@@ -580,7 +588,8 @@ public class MainActivity extends AppCompatActivity {
             double subtotal = cantidad * producto.precio;
             total += subtotal;
 
-            TableRow row = new TableRow(this);
+            LinearLayout row = new LinearLayout(this);
+            row.setOrientation(LinearLayout.HORIZONTAL);
             row.addView(productOrderCell(producto));
             row.addView(orderSubtotalCell(currency.format(subtotal)));
             row.addView(quantityCell(producto, cantidad));
@@ -903,7 +912,7 @@ public class MainActivity extends AppCompatActivity {
         cell.setBackgroundResource(R.drawable.bg_table_cell);
         cell.setGravity(android.view.Gravity.CENTER_VERTICAL);
         cell.setPadding(dp(10), dp(6), dp(10), dp(6));
-        cell.setLayoutParams(new TableRow.LayoutParams(dp(220), dp(76)));
+        cell.setLayoutParams(new LinearLayout.LayoutParams(dp(220), dp(76)));
 
         TextView nombre = label(producto.nombre, 14, R.color.cyber_text, true);
         nombre.setSingleLine(false);
@@ -935,7 +944,7 @@ public class MainActivity extends AppCompatActivity {
         cell.setTypeface(null, android.graphics.Typeface.BOLD);
         cell.setBackgroundResource(R.drawable.bg_table_cell);
         cell.setSingleLine(true);
-        cell.setLayoutParams(new TableRow.LayoutParams(dp(120), dp(76)));
+        cell.setLayoutParams(new LinearLayout.LayoutParams(dp(120), dp(76)));
         return cell;
     }
 
@@ -945,7 +954,7 @@ public class MainActivity extends AppCompatActivity {
         cell.setGravity(android.view.Gravity.CENTER);
         cell.setOrientation(LinearLayout.HORIZONTAL);
         cell.setBackgroundResource(R.drawable.bg_table_cell);
-        cell.setLayoutParams(new TableRow.LayoutParams(dp(176), dp(76)));
+        cell.setLayoutParams(new LinearLayout.LayoutParams(dp(176), dp(76)));
 
         Button minus = qtyButton("-");
         TextView value = qtyValue(String.valueOf(cantidad));
@@ -1111,6 +1120,13 @@ public class MainActivity extends AppCompatActivity {
         // Borra todas las filas excepto la primera, que corresponde al encabezado.
         while (table.getChildCount() > 1) {
             table.removeViewAt(1);
+        }
+    }
+
+    private void clearLinearBody(LinearLayout container) {
+        // Borra todas las filas excepto la primera, que corresponde al encabezado.
+        while (container.getChildCount() > 1) {
+            container.removeViewAt(1);
         }
     }
 

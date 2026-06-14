@@ -17,15 +17,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <include
-        android:id="@+id/navigation"
-        layout="@layout/layout_navigation"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topNeonLine" />
-
     <ScrollView
         android:id="@+id/orderScroll"
         android:layout_width="0dp"
@@ -35,10 +26,10 @@
         android:paddingTop="18dp"
         android:paddingEnd="10dp"
         android:paddingBottom="22dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/navigation">
+        app:layout_constraintTop_toBottomOf="@id/topNeonLine">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -74,16 +65,18 @@
                 android:fillViewport="true"
                 android:scrollbars="horizontal">
 
-                <!-- Tabla visual del pedido: productos con precio, subtotal y cantidad. -->
-                <TableLayout
+                <!-- Contenedor de filas del pedido. Usamos LinearLayout para controlar mejor textos largos. -->
+                <LinearLayout
                     android:id="@+id/tableOrden"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:shrinkColumns="0"
-                    android:stretchColumns="0">
+                    android:orientation="vertical">
 
-                    <!-- Encabezados de columnas para la tabla de orden. -->
-                    <TableRow>
+                    <!-- Encabezados de columnas para la orden. -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
                         <TextView
                             style="@style/CyberOrderHeader"
@@ -99,179 +92,8 @@
                             style="@style/CyberOrderHeader"
                             android:minWidth="176dp"
                             android:text="Cantidad" />
-                    </TableRow>
-
-                    <!-- Fila de producto: el subtotal equivale a precio por cantidad. -->
-                    <TableRow>
-
-                        <LinearLayout style="@style/CyberProductOrderCell">
-
-                            <TextView
-                                style="@style/CyberProductName"
-                                android:text="Queso" />
-
-                            <TextView
-                                style="@style/CyberProductPrice"
-                                android:text="$0.50" />
-                        </LinearLayout>
-
-                        <TextView
-                            style="@style/CyberOrderSubtotal"
-                            android:text="$0.00" />
-
-                        <LinearLayout style="@style/CyberQuantityCell">
-
-                            <!-- Controles de cantidad: restar, mostrar cantidad y sumar. -->
-                            <Button
-                                style="@style/CyberQtyButton"
-                                android:text="-" />
-
-                            <TextView
-                                style="@style/CyberQtyValue"
-                                android:text="0" />
-
-                            <Button
-                                style="@style/CyberQtyButton"
-                                android:text="+" />
-                        </LinearLayout>
-                    </TableRow>
-
-                    <!-- Fila de producto: se repetira dinamicamente cuando conectemos Room. -->
-                    <TableRow>
-
-                        <LinearLayout style="@style/CyberProductOrderCell">
-
-                            <TextView
-                                style="@style/CyberProductName"
-                                android:text="Frijol con queso" />
-
-                            <TextView
-                                style="@style/CyberProductPrice"
-                                android:text="$0.50" />
-                        </LinearLayout>
-
-                        <TextView
-                            style="@style/CyberOrderSubtotal"
-                            android:text="$0.00" />
-
-                        <LinearLayout style="@style/CyberQuantityCell">
-
-                            <Button
-                                style="@style/CyberQtyButton"
-                                android:text="-" />
-
-                            <TextView
-                                style="@style/CyberQtyValue"
-                                android:text="0" />
-
-                            <Button
-                                style="@style/CyberQtyButton"
-                                android:text="+" />
-                        </LinearLayout>
-                    </TableRow>
-
-                    <!-- Fila de producto con cantidad cero para mostrar subtotal en $0.00. -->
-                    <TableRow>
-
-                        <LinearLayout style="@style/CyberProductOrderCell">
-
-                            <TextView
-                                style="@style/CyberProductName"
-                                android:text="Revueltas" />
-
-                            <TextView
-                                style="@style/CyberProductPrice"
-                                android:text="$0.60" />
-                        </LinearLayout>
-
-                        <TextView
-                            style="@style/CyberOrderSubtotal"
-                            android:text="$0.00" />
-
-                        <LinearLayout style="@style/CyberQuantityCell">
-
-                            <Button
-                                style="@style/CyberQtyButton"
-                                android:text="-" />
-
-                            <TextView
-                                style="@style/CyberQtyValue"
-                                android:text="0" />
-
-                            <Button
-                                style="@style/CyberQtyButton"
-                                android:text="+" />
-                        </LinearLayout>
-                    </TableRow>
-
-                    <!-- Fila de producto de ejemplo para el catalogo inicial. -->
-                    <TableRow>
-
-                        <LinearLayout style="@style/CyberProductOrderCell">
-
-                            <TextView
-                                style="@style/CyberProductName"
-                                android:text="Loroco con queso" />
-
-                            <TextView
-                                style="@style/CyberProductPrice"
-                                android:text="$0.75" />
-                        </LinearLayout>
-
-                        <TextView
-                            style="@style/CyberOrderSubtotal"
-                            android:text="$0.00" />
-
-                        <LinearLayout style="@style/CyberQuantityCell">
-
-                            <Button
-                                style="@style/CyberQtyButton"
-                                android:text="-" />
-
-                            <TextView
-                                style="@style/CyberQtyValue"
-                                android:text="0" />
-
-                            <Button
-                                style="@style/CyberQtyButton"
-                                android:text="+" />
-                        </LinearLayout>
-                    </TableRow>
-
-                    <!-- Fila de producto de ejemplo para el catalogo inicial. -->
-                    <TableRow>
-
-                        <LinearLayout style="@style/CyberProductOrderCell">
-
-                            <TextView
-                                style="@style/CyberProductName"
-                                android:text="Chicharron" />
-
-                            <TextView
-                                style="@style/CyberProductPrice"
-                                android:text="$0.65" />
-                        </LinearLayout>
-
-                        <TextView
-                            style="@style/CyberOrderSubtotal"
-                            android:text="0" />
-
-                        <LinearLayout style="@style/CyberQuantityCell">
-
-                            <Button
-                                style="@style/CyberQtyButton"
-                                android:text="-" />
-
-                            <TextView
-                                style="@style/CyberQtyValue"
-                                android:text="0" />
-
-                            <Button
-                                style="@style/CyberQtyButton"
-                                android:text="+" />
-                        </LinearLayout>
-                    </TableRow>
-                </TableLayout>
+                    </LinearLayout>
+                </LinearLayout>
             </HorizontalScrollView>
 
             <!-- Resumen del pedido: reinicio, total general y confirmacion. -->
@@ -293,7 +115,7 @@
                     android:minWidth="0dp"
                     android:text="REINICIAR"
                     android:textColor="@color/cyber_magenta"
-                    android:textSize="13sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -313,14 +135,25 @@
                     android:id="@+id/btnConfirmarPedido"
                     android:layout_width="0dp"
                     android:layout_height="50dp"
-                    android:layout_weight="1.4"
+                    android:layout_weight="1"
                     android:background="@drawable/bg_cyber_button"
                     android:minWidth="0dp"
                     android:text="CONFIRMAR"
                     android:textColor="@color/black"
-                    android:textSize="13sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
+    <!-- Barra de navegación inferior -->
+    <include
+        android:id="@+id/navigation"
+        layout="@layout/layout_navigation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
