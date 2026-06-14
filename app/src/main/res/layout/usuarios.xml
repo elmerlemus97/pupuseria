@@ -5,15 +5,304 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_cyberpunk"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <!-- Linea neon superior para mantener la identidad visual del sistema. -->
+    <View
+        android:id="@+id/topNeonLine"
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:background="@color/cyber_magenta"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ScrollView
+        android:id="@+id/usersScroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingStart="18dp"
+        android:paddingTop="22dp"
+        android:paddingEnd="18dp"
+        android:paddingBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topNeonLine">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Encabezado del mantenimiento de usuarios. -->
+            <TextView
+                android:id="@+id/txtUsuariosTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.04"
+                android:text="USUARIOS"
+                android:textAllCaps="true"
+                android:textColor="@color/cyber_cyan"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtUsuariosSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Administracion de accesos locales"
+                android:textColor="@color/cyber_text_muted"
+                android:textSize="14sp" />
+
+            <!-- Formulario reutilizable para agregar o modificar usuarios. -->
+            <LinearLayout
+                android:id="@+id/formUsuariosPanel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_cyber_panel_alt"
+                android:elevation="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtFormUsuarioTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="USUARIO"
+                    android:textColor="@color/cyber_yellow"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/formUsuarioInputsRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/edtUsernameAdmin"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_weight="1.1"
+                        android:background="@drawable/bg_cyber_input"
+                        android:hint="Usuario"
+                        android:inputType="textPersonName"
+                        android:maxLines="1"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:textColor="@color/cyber_text"
+                        android:textColorHint="@color/cyber_text_muted"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/edtPasswordAdmin"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_cyber_input"
+                        android:hint="Contrasena"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:textColor="@color/cyber_text"
+                        android:textColorHint="@color/cyber_text_muted"
+                        android:textSize="15sp" />
+
+                    <Button
+                        android:id="@+id/btnAgregarUsuario"
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:layout_marginStart="10dp"
+                        android:background="@drawable/bg_cyber_button"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        android:padding="0dp"
+                        android:text="+"
+                        android:textColor="@color/black"
+                        android:textSize="26sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txtEstadoUsuarioDefault"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_status_inactive"
+                    android:paddingStart="14dp"
+                    android:paddingTop="6dp"
+                    android:paddingEnd="14dp"
+                    android:paddingBottom="6dp"
+                    android:text="Estado por defecto: Inactivo"
+                    android:textColor="#FFFF2B5D"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Buscador visual para filtrar usuarios por username. -->
+            <LinearLayout
+                android:id="@+id/searchUsuariosBox"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/bg_cyber_input"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp">
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:contentDescription="Buscar"
+                    android:src="@drawable/ic_search"
+                    app:tint="@color/cyber_cyan" />
+
+                <EditText
+                    android:id="@+id/edtBuscarUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:hint="Buscar usuario..."
+                    android:inputType="text"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:textColor="@color/cyber_text"
+                    android:textColorHint="@color/cyber_text_muted"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txtUsuariosTablaTitulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Usuarios registrados"
+                android:textColor="@color/cyber_text"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <HorizontalScrollView
+                android:id="@+id/usersTableScroll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fillViewport="true"
+                android:scrollbars="horizontal">
+
+                <TableLayout
+                    android:id="@+id/tableUsuarios"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:shrinkColumns="0"
+                    android:stretchColumns="0">
+
+                    <TableRow>
+
+                        <TextView
+                            style="@style/CyberTableHeader"
+                            android:minWidth="180dp"
+                            android:text="Usuario" />
+
+                        <TextView
+                            style="@style/CyberTableHeader"
+                            android:minWidth="120dp"
+                            android:text="Estado" />
+
+                        <TextView
+                            style="@style/CyberTableHeader"
+                            android:minWidth="150dp"
+                            android:text="Acciones" />
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            style="@style/CyberTableCell"
+                            android:text="admin" />
+
+                        <TextView
+                            style="@style/CyberTableCell"
+                            android:text="Activo" />
+
+                        <LinearLayout style="@style/CyberActionCell">
+
+                            <Button
+                                style="@style/CyberEditButton"
+                                android:text="E" />
+
+                            <Button
+                                style="@style/CyberDeleteButton"
+                                android:text="X" />
+
+                            <Button
+                                style="@style/CyberToggleButton"
+                                android:text="OFF" />
+                        </LinearLayout>
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            style="@style/CyberTableCell"
+                            android:text="vendedor01" />
+
+                        <TextView
+                            style="@style/CyberTableCell"
+                            android:text="Activo" />
+
+                        <LinearLayout style="@style/CyberActionCell">
+
+                            <Button
+                                style="@style/CyberEditButton"
+                                android:text="E" />
+
+                            <Button
+                                style="@style/CyberDeleteButton"
+                                android:text="X" />
+
+                            <Button
+                                style="@style/CyberToggleButton"
+                                android:text="OFF" />
+                        </LinearLayout>
+                    </TableRow>
+
+                    <!-- Usuario inactivo: se identifica visualmente con la fila roja. -->
+                    <TableRow>
+
+                        <TextView
+                            style="@style/CyberTableCellInactive"
+                            android:text="usuario_pendiente" />
+
+                        <TextView
+                            style="@style/CyberTableCellInactive"
+                            android:text="Inactivo" />
+
+                        <LinearLayout style="@style/CyberActionCellInactive">
+
+                            <Button
+                                style="@style/CyberEditButton"
+                                android:text="E" />
+
+                            <Button
+                                style="@style/CyberDeleteButton"
+                                android:text="X" />
+
+                            <Button
+                                style="@style/CyberToggleButton"
+                                android:text="ON" />
+                        </LinearLayout>
+                    </TableRow>
+                </TableLayout>
+            </HorizontalScrollView>
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
