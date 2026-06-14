@@ -49,6 +49,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract DetallePedidoDao detallePedidoDao();
 
     public static AppDatabase getInstance(Context context) {
+        // Patron singleton: evita crear varias conexiones a la misma base SQLite.
         if (INSTANCE == null) {
             synchronized (AppDatabase.class) {
                 if (INSTANCE == null) {
@@ -76,6 +77,7 @@ public abstract class AppDatabase extends RoomDatabase {
                     return;
                 }
 
+                // Datos iniciales del menu para que la tabla Producto no nazca vacia.
                 ProductoDao productoDao = INSTANCE.productoDao();
                 productoDao.insertar(new Producto("Queso", 0.50, 1));
                 productoDao.insertar(new Producto("Frijol con queso", 0.50, 1));
