@@ -576,27 +576,36 @@ public class MainActivity extends AppCompatActivity {
 
     private void confirmarPedido() {
         // Abre el dialogo donde se capturan datos del cliente antes de guardar.
-        double total = calcularTotalPedidoActual();
-        if (total <= 0) {
-            toast("Selecciona al menos una pupusa");
-            return;
+        try {
+            double total = calcularTotalPedidoActual();
+            if (total <= 0) {
+                toast("Selecciona al menos una pupusa");
+                return;
+            }
+
+            View dialogView = getLayoutInflater().inflate(R.layout.dialog_confirmar_pedido, null);
+            EditText edtNombre = dialogView.findViewById(R.id.edtNombreClienteConfirm);
+            EditText edtTelefono = dialogView.findViewById(R.id.edtTelefonoClienteConfirm);
+            TextView txtTotal = dialogView.findViewById(R.id.txtTotalConfirm);
+            LinearLayout container = dialogView.findViewById(R.id.containerResumenItems);
+            Button btnGuardar = dialogView.findViewById(R.id.btnGuardarPedido);
+            Button btnCerrar = dialogView.findViewById(R.id.btnCerrarDialog);
+
+            if (edtNombre == null || edtTelefono == null || txtTotal == null || container == null || btnGuardar == null || btnCerrar == null) {
+                toast("No se pudo abrir la confirmacion del pedido");
+                return;
+            }
+
+            txtTotal.setText("Total: " + currency.format(total));
+            renderResumenDialog(container);
+
+            AlertDialog dialog = new AlertDialog.Builder(this).setView(dialogView).create();
+            btnCerrar.setOnClickListener(v -> dialog.dismiss());
+            btnGuardar.setOnClickListener(v -> guardarPedido(dialog, edtNombre, edtTelefono));
+            dialog.show();
+        } catch (Exception e) {
+            toast("Error al confirmar pedido: " + e.getMessage());
         }
-
-        View dialogView = getLayoutInflater().inflate(R.layout.dialog_confirmar_pedido, null);
-        EditText edtNombre = dialogView.findViewById(R.id.edtNombreClienteConfirm);
-        EditText edtTelefono = dialogView.findViewById(R.id.edtTelefonoClienteConfirm);
-        TextView txtTotal = dialogView.findViewById(R.id.txtTotalConfirm);
-        LinearLayout container = dialogView.findViewById(R.id.containerResumenItems);
-        Button btnGuardar = dialogView.findViewById(R.id.btnGuardarPedido);
-        Button btnCerrar = dialogView.findViewById(R.id.btnCerrarDialog);
-
-        txtTotal.setText("Total: " + currency.format(total));
-        renderResumenDialog(container);
-
-        AlertDialog dialog = new AlertDialog.Builder(this).setView(dialogView).create();
-        btnCerrar.setOnClickListener(v -> dialog.dismiss());
-        btnGuardar.setOnClickListener(v -> guardarPedido(dialog, edtNombre, edtTelefono));
-        dialog.show();
     }
 
     private void guardarPedido(AlertDialog dialog, EditText edtNombre, EditText edtTelefono) {
@@ -609,57 +618,87 @@ public class MainActivity extends AppCompatActivity {
         }
 
         executor.execute(() -> {
-            Cliente cliente = db.clienteDao().buscarPorTelefono(telefono);
-            int clienteId;
-            if (cliente == null) {
-                // Cliente nuevo.
-                clienteId = (int) db.clienteDao().insertar(new Cliente(nombre, telefono, ""));
-            } else {
-                // Cliente existente: se actualiza el nombre por si cambio.
-                cliente.nombre = nombre;
-                db.clienteDao().actualizar(cliente);
-                clienteId = cliente.idCliente;
-            }
-
-            String fecha = new SimpleDateFormat("dd-MM-yyyy", Locale.US).format(new Date());
-            String hora = new SimpleDateFormat("HH:mm", Locale.US).format(new Date());
-            double total = calcularTotalPedidoActual();
-
-            int pedidoId;
-            if (pedidoEditandoId == null) {
-                // Pedido nuevo en estado 0: Pendiente.
-                pedidoId = (int) db.pedidoDao().insertar(new Pedido(currentUserId, clienteId, fecha, hora, total, 0, 0));
-            } else {
-                // Pedido existente: actualiza cabecera y recrea detalles.
-                Pedido pedido = db.pedidoDao().buscarPorId(pedidoEditandoId);
-                pedido.usuarioId = currentUserId;
-                pedido.clienteId = clienteId;
-                pedido.fecha = fecha;
-                pedido.hora = hora;
-                pedido.total = total;
-                pedido.estadoEntrega = 0;
-                db.pedidoDao().actualizar(pedido);
-                db.detallePedidoDao().eliminarPorPedido(pedidoEditandoId);
-                pedidoId = pedidoEditandoId;
-            }
-
-            for (Producto producto : productosOrden) {
-                int cantidad = cantidadesPedido.getOrDefault(producto.idProducto, 0);
-                if (cantidad > 0) {
-                    double subtotal = cantidad * producto.precio;
-                    db.detallePedidoDao().insertar(new DetallePedido(pedidoId, producto.idProducto, cantidad, producto.precio, subtotal));
+            try {
+                int vendedorId = obtenerUsuarioVendedorId();
+                if (vendedorId <= 0) {
+                    runOnUiThread(() -> toast("No hay usuario activo para guardar el pedido"));
+                    return;
                 }
-            }
 
-            runOnUiThread(() -> {
-                dialog.dismiss();
-                pedidoEditandoId = null;
-                cantidadesPedido.clear();
-                renderOrden();
-                toast("Pedido guardado como pendiente");
-                showPendientes();
-            });
+                Cliente cliente = db.clienteDao().buscarPorTelefono(telefono);
+                int clienteId;
+                if (cliente == null) {
+                    // Cliente nuevo.
+                    clienteId = (int) db.clienteDao().insertar(new Cliente(nombre, telefono, ""));
+                } else {
+                    // Cliente existente: se actualiza el nombre por si cambio.
+                    cliente.nombre = nombre;
+                    db.clienteDao().actualizar(cliente);
+                    clienteId = cliente.idCliente;
+                }
+
+                String fecha = new SimpleDateFormat("dd-MM-yyyy", Locale.US).format(new Date());
+                String hora = new SimpleDateFormat("HH:mm", Locale.US).format(new Date());
+                double total = calcularTotalPedidoActual();
+
+                int pedidoId;
+                if (pedidoEditandoId == null) {
+                    // Pedido nuevo en estado 0: Pendiente.
+                    pedidoId = (int) db.pedidoDao().insertar(new Pedido(vendedorId, clienteId, fecha, hora, total, 0, 0));
+                } else {
+                    // Pedido existente: actualiza cabecera y recrea detalles.
+                    Pedido pedido = db.pedidoDao().buscarPorId(pedidoEditandoId);
+                    if (pedido == null) {
+                        runOnUiThread(() -> toast("No se encontro el pedido a modificar"));
+                        return;
+                    }
+                    pedido.usuarioId = vendedorId;
+                    pedido.clienteId = clienteId;
+                    pedido.fecha = fecha;
+                    pedido.hora = hora;
+                    pedido.total = total;
+                    pedido.estadoEntrega = 0;
+                    db.pedidoDao().actualizar(pedido);
+                    db.detallePedidoDao().eliminarPorPedido(pedidoEditandoId);
+                    pedidoId = pedidoEditandoId;
+                }
+
+                for (Producto producto : productosOrden) {
+                    int cantidad = cantidadesPedido.getOrDefault(producto.idProducto, 0);
+                    if (cantidad > 0) {
+                        double subtotal = cantidad * producto.precio;
+                        db.detallePedidoDao().insertar(new DetallePedido(pedidoId, producto.idProducto, cantidad, producto.precio, subtotal));
+                    }
+                }
+
+                runOnUiThread(() -> {
+                    dialog.dismiss();
+                    pedidoEditandoId = null;
+                    cantidadesPedido.clear();
+                    renderOrden();
+                    toast("Pedido guardado como pendiente");
+                    showPendientes();
+                });
+            } catch (Exception e) {
+                runOnUiThread(() -> toast("Error al guardar pedido: " + e.getMessage()));
+            }
         });
+    }
+
+    private int obtenerUsuarioVendedorId() {
+        // Usa el usuario conectado; si no existe por sesion vieja, usa el primer activo.
+        if (currentUserId > 0) {
+            return currentUserId;
+        }
+
+        Usuario usuarioActivo = db.usuarioDao().buscarPrimerActivo();
+        if (usuarioActivo == null) {
+            return -1;
+        }
+
+        currentUserId = usuarioActivo.idUsuario;
+        currentUsername = usuarioActivo.username;
+        return usuarioActivo.idUsuario;
     }
 
     private void showPendientes() {

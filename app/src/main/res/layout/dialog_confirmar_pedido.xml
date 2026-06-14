@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Layout para el Diálogo de Confirmación de Pedido -->
+<!-- Dialogo para confirmar un pedido antes de guardarlo en Room. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
@@ -9,30 +8,15 @@
     android:orientation="vertical"
     android:padding="20dp">
 
-    <!-- Título del Diálogo -->
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:gravity="center"
+        android:text="Confirmacion del Pedido"
+        android:textColor="@color/cyber_magenta"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Confirmación del Pedido"
-            android:textColor="@color/cyber_magenta"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <View
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:background="@color/cyber_yellow" />
-    </LinearLayout>
-
-    <!-- Datos del Cliente -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,7 +34,9 @@
         android:background="@drawable/bg_cyber_input"
         android:hint="Nombre del cliente"
         android:inputType="textCapWords"
+        android:maxLines="1"
         android:paddingStart="12dp"
+        android:paddingEnd="12dp"
         android:textColor="@color/cyber_text"
         android:textColorHint="@color/cyber_text_muted"
         android:textSize="14sp" />
@@ -61,25 +47,32 @@
         android:layout_height="45dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/bg_cyber_input"
-        android:hint="Número celular"
+        android:hint="Numero celular"
         android:inputType="phone"
+        android:maxLines="1"
         android:paddingStart="12dp"
+        android:paddingEnd="12dp"
         android:textColor="@color/cyber_text"
         android:textColorHint="@color/cyber_text_muted"
         android:textSize="14sp" />
 
-    <!-- Encabezados de Tabla de Resumen -->
-    <TableLayout
+    <!-- Resumen dinamico del pedido seleccionado. -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
 
-        <TableRow
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:background="#1A00E5FF"
+            android:orientation="horizontal"
             android:padding="8dp">
 
             <TextView
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1.5"
                 android:text="Tipo"
                 android:textColor="@color/cyber_cyan"
@@ -87,6 +80,7 @@
 
             <TextView
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Cantidad"
@@ -95,64 +89,31 @@
 
             <TextView
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="end"
                 android:text="Subtotal"
                 android:textColor="@color/cyber_cyan"
                 android:textStyle="bold" />
-        </TableRow>
+        </LinearLayout>
 
-        <!-- Contenedor para filas dinámicas (se llenará en Java) -->
         <LinearLayout
             android:id="@+id/containerResumenItems"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical" />
+    </LinearLayout>
 
-            <!-- Ejemplo de fila estática (como en la imagen) -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#33FFFFFF" />
-
-            <TableRow android:padding="8dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1.5"
-                    android:text="Loroco"
-                    android:textColor="@color/white" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="3"
-                    android:textColor="@color/white" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:gravity="end"
-                    android:text="$1.50"
-                    android:textColor="@color/white" />
-            </TableRow>
-        </LinearLayout>
-
-    </TableLayout>
-
-    <!-- Total General -->
     <TextView
         android:id="@+id/txtTotalConfirm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Total: $6.75"
+        android:text="Total: $0.00"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold" />
 
-    <!-- Botones de Acción -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -180,5 +141,4 @@
             android:textColor="@color/white"
             android:textStyle="bold" />
     </LinearLayout>
-
 </LinearLayout>

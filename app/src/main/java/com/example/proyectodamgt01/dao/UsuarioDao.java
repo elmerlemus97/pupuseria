@@ -33,6 +33,10 @@ public interface UsuarioDao {
     @Query("SELECT * FROM Usuarios WHERE username = :username AND password = :password AND estado = 1 LIMIT 1")
     Usuario login(String username, String password);
 
+    // Devuelve el primer usuario activo disponible. Se usa como respaldo al guardar pedidos.
+    @Query("SELECT * FROM Usuarios WHERE estado = 1 ORDER BY id_usuario ASC LIMIT 1")
+    Usuario buscarPrimerActivo();
+
     // Activacion/aprobacion de acceso desde el CRUD de usuarios.
     @Query("UPDATE Usuarios SET estado = :estado WHERE id_usuario = :idUsuario")
     void cambiarEstado(int idUsuario, int estado);
