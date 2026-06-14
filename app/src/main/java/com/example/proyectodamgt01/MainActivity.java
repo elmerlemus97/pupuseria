@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -144,12 +145,27 @@ public class MainActivity extends AppCompatActivity {
         View navPending = findViewById(R.id.navPending);
         View navDelivered = findViewById(R.id.navDelivered);
         View navUsers = findViewById(R.id.navUsers);
+        View navLogout = findViewById(R.id.navLogout);
 
         if (navMenu != null) navMenu.setOnClickListener(v -> showMenu());
         if (navOrder != null) navOrder.setOnClickListener(v -> showOrdenar());
         if (navPending != null) navPending.setOnClickListener(v -> showPendientes());
         if (navDelivered != null) navDelivered.setOnClickListener(v -> showEntregados());
         if (navUsers != null) navUsers.setOnClickListener(v -> showUsuarios());
+        if (navLogout != null) navLogout.setOnClickListener(v -> logout());
+    }
+
+    private void logout() {
+        // Limpia la sesion en SharedPreferences y regresa al Login.
+        prefs.edit()
+                .putBoolean(KEY_REMEMBER, false)
+                .putInt(KEY_USER_ID, -1)
+                .putString(KEY_USERNAME, "")
+                .apply();
+        
+        currentUserId = -1;
+        currentUsername = "";
+        showLogin();
     }
 
     private void showLogin() {
@@ -885,10 +901,27 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout cell = new LinearLayout(this);
         cell.setOrientation(LinearLayout.VERTICAL);
         cell.setBackgroundResource(R.drawable.bg_table_cell);
-        cell.setPadding(dp(12), dp(8), dp(12), dp(8));
-        cell.setLayoutParams(new TableRow.LayoutParams(dp(220), dp(68)));
-        cell.addView(label(producto.nombre, 15, R.color.cyber_text, true));
-        cell.addView(label(currency.format(producto.precio), 12, R.color.cyber_magenta, true));
+        cell.setGravity(android.view.Gravity.CENTER_VERTICAL);
+        cell.setPadding(dp(10), dp(6), dp(10), dp(6));
+        cell.setLayoutParams(new TableRow.LayoutParams(dp(220), dp(76)));
+
+        TextView nombre = label(producto.nombre, 14, R.color.cyber_text, true);
+        nombre.setSingleLine(false);
+        nombre.setMaxLines(2);
+        nombre.setEllipsize(TextUtils.TruncateAt.END);
+        nombre.setIncludeFontPadding(false);
+        cell.addView(nombre);
+
+        TextView precio = label(currency.format(producto.precio), 11, R.color.cyber_magenta, true);
+        precio.setSingleLine(true);
+        precio.setIncludeFontPadding(false);
+        LinearLayout.LayoutParams priceParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        priceParams.setMargins(0, dp(4), 0, 0);
+        precio.setLayoutParams(priceParams);
+        cell.addView(precio);
         return cell;
     }
 
@@ -901,7 +934,8 @@ public class MainActivity extends AppCompatActivity {
         cell.setGravity(android.view.Gravity.CENTER);
         cell.setTypeface(null, android.graphics.Typeface.BOLD);
         cell.setBackgroundResource(R.drawable.bg_table_cell);
-        cell.setLayoutParams(new TableRow.LayoutParams(dp(120), dp(68)));
+        cell.setSingleLine(true);
+        cell.setLayoutParams(new TableRow.LayoutParams(dp(120), dp(76)));
         return cell;
     }
 
@@ -911,7 +945,7 @@ public class MainActivity extends AppCompatActivity {
         cell.setGravity(android.view.Gravity.CENTER);
         cell.setOrientation(LinearLayout.HORIZONTAL);
         cell.setBackgroundResource(R.drawable.bg_table_cell);
-        cell.setLayoutParams(new TableRow.LayoutParams(dp(176), dp(68)));
+        cell.setLayoutParams(new TableRow.LayoutParams(dp(176), dp(76)));
 
         Button minus = qtyButton("-");
         TextView value = qtyValue(String.valueOf(cantidad));
