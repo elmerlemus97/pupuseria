@@ -5,15 +5,423 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_cyberpunk"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <!-- Linea neon decorativa superior. -->
+    <View
+        android:id="@+id/topNeonLine"
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:background="@color/cyber_magenta"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ScrollView
+        android:id="@+id/pendingScroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topNeonLine">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Encabezado de pedidos pendientes. -->
+            <TextView
+                android:id="@+id/txtPendingTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.04"
+                android:text="PEDIDOS PENDIENTES"
+                android:textColor="@color/cyber_cyan"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtPendingSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Busca por nombre del cliente"
+                android:textColor="@color/cyber_text_muted"
+                android:textSize="13sp" />
+
+            <!-- Buscador visual; luego se conectara al filtro por nombre_cliente. -->
+            <LinearLayout
+                android:id="@+id/searchPanel"
+                android:layout_width="match_parent"
+                android:layout_height="54dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_cyber_input"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="Buscar"
+                    android:src="@drawable/ic_search"
+                    android:tint="@color/cyber_cyan" />
+
+                <EditText
+                    android:id="@+id/edtBuscarCliente"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:hint="Nombre del cliente"
+                    android:inputType="textCapWords"
+                    android:maxLines="1"
+                    android:textColor="@color/cyber_text"
+                    android:textColorHint="@color/cyber_text_muted"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <!-- Contenedor que despues sera reemplazado por un RecyclerView dinamico. -->
+            <LinearLayout
+                android:id="@+id/listaPedidosPendientes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical">
+
+                <!-- Tarjeta de pedido pendiente con cliente, detalle, total y acciones. -->
+                <LinearLayout
+                    android:id="@+id/cardPedidoAna"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_pending_card"
+                    android:elevation="8dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtClienteAna"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ana Martinez"
+                        android:textColor="@color/cyber_cyan"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtTelefonoAna"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Celular: 7070-7070"
+                        android:textColor="@color/cyber_text_muted"
+                        android:textSize="13sp" />
+
+                    <TableLayout
+                        android:id="@+id/tablePedidoAna"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:stretchColumns="0">
+
+                        <TableRow>
+                            <TextView
+                                style="@style/CyberPendingHeader"
+                                android:text="Pedido" />
+
+                            <TextView
+                                style="@style/CyberPendingHeader"
+                                android:text="Cant." />
+
+                            <TextView
+                                style="@style/CyberPendingHeader"
+                                android:text="Subtotal" />
+                        </TableRow>
+
+                        <TableRow>
+                            <TextView
+                                style="@style/CyberPendingCell"
+                                android:text="Queso" />
+
+                            <TextView
+                                style="@style/CyberPendingCellCenter"
+                                android:text="2" />
+
+                            <TextView
+                                style="@style/CyberPendingCellCenter"
+                                android:text="$1.00" />
+                        </TableRow>
+
+                        <TableRow>
+                            <TextView
+                                style="@style/CyberPendingCell"
+                                android:text="Loroco con queso" />
+
+                            <TextView
+                                style="@style/CyberPendingCellCenter"
+                                android:text="2" />
+
+                            <TextView
+                                style="@style/CyberPendingCellCenter"
+                                android:text="$1.50" />
+                        </TableRow>
+
+                        <TableRow>
+                            <TextView
+                                style="@style/CyberPendingCell"
+                                android:text="Chicharron" />
+
+                            <TextView
+                                style="@style/CyberPendingCellCenter"
+                                android:text="1" />
+
+                            <TextView
+                                style="@style/CyberPendingCellCenter"
+                                android:text="$0.65" />
+                        </TableRow>
+                    </TableLayout>
+
+                    <TextView
+                        android:id="@+id/txtTotalAna"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:text="Total: $3.15"
+                        android:textColor="@color/cyber_yellow"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtFechaAna"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/bg_pending_meta"
+                        android:text="Fecha: 14-06-2026  11:15"
+                        android:textColor="@color/cyber_text"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/txtUsuarioAna"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_pending_meta"
+                        android:text="Usuario: vendedor01"
+                        android:textColor="@color/cyber_text"
+                        android:textSize="12sp" />
+
+                    <LinearLayout
+                        android:id="@+id/deliveryAna"
+                        android:layout_width="wrap_content"
+                        android:layout_height="34dp"
+                        android:layout_marginTop="14dp"
+                        android:background="@drawable/bg_pending_delivery"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Delivery"
+                            android:textColor="@color/cyber_cyan"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:text="Pendiente"
+                            android:textColor="@color/cyber_yellow"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/actionsAna"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btnBorrarAna"
+                            android:layout_width="0dp"
+                            android:layout_height="46dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_button_outline_magenta"
+                            android:text="BORRAR"
+                            android:textColor="@color/cyber_magenta"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <Button
+                            android:id="@+id/btnModificarAna"
+                            android:layout_width="0dp"
+                            android:layout_height="46dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_button_outline_yellow"
+                            android:text="MODIFICAR"
+                            android:textColor="@color/cyber_yellow"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Segunda tarjeta de ejemplo para ver el listado ordenado de pedidos. -->
+                <LinearLayout
+                    android:id="@+id/cardPedidoCarlos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:background="@drawable/bg_pending_card"
+                    android:elevation="8dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtClienteCarlos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Carlos Perez"
+                        android:textColor="@color/cyber_cyan"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtTelefonoCarlos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Celular: 5555-1212"
+                        android:textColor="@color/cyber_text_muted"
+                        android:textSize="13sp" />
+
+                    <TableLayout
+                        android:id="@+id/tablePedidoCarlos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:stretchColumns="0">
+
+                        <TableRow>
+                            <TextView
+                                style="@style/CyberPendingHeader"
+                                android:text="Pedido" />
+
+                            <TextView
+                                style="@style/CyberPendingHeader"
+                                android:text="Cant." />
+
+                            <TextView
+                                style="@style/CyberPendingHeader"
+                                android:text="Subtotal" />
+                        </TableRow>
+
+                        <TableRow>
+                            <TextView
+                                style="@style/CyberPendingCell"
+                                android:text="Frijol con queso" />
+
+                            <TextView
+                                style="@style/CyberPendingCellCenter"
+                                android:text="3" />
+
+                            <TextView
+                                style="@style/CyberPendingCellCenter"
+                                android:text="$1.50" />
+                        </TableRow>
+
+                        <TableRow>
+                            <TextView
+                                style="@style/CyberPendingCell"
+                                android:text="Revueltas" />
+
+                            <TextView
+                                style="@style/CyberPendingCellCenter"
+                                android:text="2" />
+
+                            <TextView
+                                style="@style/CyberPendingCellCenter"
+                                android:text="$1.20" />
+                        </TableRow>
+                    </TableLayout>
+
+                    <TextView
+                        android:id="@+id/txtTotalCarlos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:text="Total: $2.70"
+                        android:textColor="@color/cyber_yellow"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtFechaCarlos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/bg_pending_meta"
+                        android:text="Fecha: 14-06-2026  11:40"
+                        android:textColor="@color/cyber_text"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/txtUsuarioCarlos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/bg_pending_meta"
+                        android:text="Usuario: vendedor01"
+                        android:textColor="@color/cyber_text"
+                        android:textSize="12sp" />
+
+                    <LinearLayout
+                        android:id="@+id/actionsCarlos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/btnBorrarCarlos"
+                            android:layout_width="0dp"
+                            android:layout_height="46dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_button_outline_magenta"
+                            android:text="BORRAR"
+                            android:textColor="@color/cyber_magenta"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <Button
+                            android:id="@+id/btnModificarCarlos"
+                            android:layout_width="0dp"
+                            android:layout_height="46dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_button_outline_yellow"
+                            android:text="MODIFICAR"
+                            android:textColor="@color/cyber_yellow"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
