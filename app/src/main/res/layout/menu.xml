@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_cyberpunk"
+    tools:context=".MainActivity">
+
+    <View
+        android:id="@+id/topNeonLine"
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:background="@color/cyber_magenta"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/menuScroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingStart="18dp"
+        android:paddingTop="22dp"
+        android:paddingEnd="18dp"
+        android:paddingBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topNeonLine">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtMenuTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.04"
+                android:text="MENU PUPUSERIA"
+                android:textAllCaps="true"
+                android:textColor="@color/cyber_cyan"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtMenuSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Catalogo local con SQLite"
+                android:textColor="@color/cyber_text_muted"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:id="@+id/formPanel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_cyber_panel_alt"
+                android:elevation="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtFormTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="PUPUSA"
+                    android:textColor="@color/cyber_yellow"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/formInputsRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/edtNombreProducto"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_weight="1.45"
+                        android:background="@drawable/bg_cyber_input"
+                        android:hint="Nombre del producto"
+                        android:inputType="textCapWords"
+                        android:maxLines="1"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:textColor="@color/cyber_text"
+                        android:textColorHint="@color/cyber_text_muted"
+                        android:textSize="15sp" />
+
+                    <EditText
+                        android:id="@+id/edtPrecioProducto"
+                        android:layout_width="0dp"
+                        android:layout_height="52dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="0.75"
+                        android:background="@drawable/bg_cyber_input"
+                        android:hint="Precio"
+                        android:inputType="numberDecimal"
+                        android:maxLines="1"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
+                        android:textColor="@color/cyber_text"
+                        android:textColorHint="@color/cyber_text_muted"
+                        android:textSize="15sp" />
+
+                    <Button
+                        android:id="@+id/btnAgregarPupusa"
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:layout_marginStart="10dp"
+                        android:background="@drawable/bg_cyber_button"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        android:padding="0dp"
+                        android:text="+"
+                        android:textColor="@color/black"
+                        android:textSize="26sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txtEstadoDefault"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_status_active"
+                    android:paddingStart="14dp"
+                    android:paddingTop="6dp"
+                    android:paddingEnd="14dp"
+                    android:paddingBottom="6dp"
+                    android:text="Estado por defecto: Activo"
+                    android:textColor="@color/cyber_cyan"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txtTablaTitulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="Pupusas registradas"
+                android:textColor="@color/cyber_text"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <HorizontalScrollView
+                android:id="@+id/tableScroll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fillViewport="true"
+                android:scrollbars="horizontal">
+
+                <TableLayout
+                    android:id="@+id/tablePupusas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:shrinkColumns="0"
+                    android:stretchColumns="0">
+
+                    <TableRow>
+
+                        <TextView
+                            style="@style/CyberTableHeader"
+                            android:minWidth="170dp"
+                            android:text="Pupusas" />
+
+                        <TextView
+                            style="@style/CyberTableHeader"
+                            android:minWidth="90dp"
+                            android:text="Precio" />
+
+                        <TextView
+                            style="@style/CyberTableHeader"
+                            android:minWidth="100dp"
+                            android:text="Estado" />
+
+                        <TextView
+                            style="@style/CyberTableHeader"
+                            android:minWidth="280dp"
+                            android:text="Acciones" />
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            style="@style/CyberTableCell"
+                            android:text="Queso" />
+
+                        <TextView
+                            style="@style/CyberTableCell"
+                            android:text="$0.50" />
+
+                        <TextView
+                            style="@style/CyberTableCell"
+                            android:text="Activo" />
+
+                        <LinearLayout style="@style/CyberActionCell">
+
+                            <Button
+                                style="@style/CyberEditButton"
+                                android:text="Editar" />
+
+                            <Button
+                                style="@style/CyberDeleteButton"
+                                android:text="Eliminar" />
+
+                            <Button
+                                style="@style/CyberToggleButton"
+                                android:text="Desactivar" />
+                        </LinearLayout>
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            style="@style/CyberTableCell"
+                            android:text="Frijol con queso" />
+
+                        <TextView
+                            style="@style/CyberTableCell"
+                            android:text="$0.50" />
+
+                        <TextView
+                            style="@style/CyberTableCell"
+                            android:text="Activo" />
+
+                        <LinearLayout style="@style/CyberActionCell">
+
+                            <Button
+                                style="@style/CyberEditButton"
+                                android:text="Editar" />
+
+                            <Button
+                                style="@style/CyberDeleteButton"
+                                android:text="Eliminar" />
+
+                            <Button
+                                style="@style/CyberToggleButton"
+                                android:text="Desactivar" />
+                        </LinearLayout>
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            style="@style/CyberTableCell"
+                            android:text="Revueltas" />
+
+                        <TextView
+                            style="@style/CyberTableCell"
+                            android:text="$0.60" />
+
+                        <TextView
+                            style="@style/CyberTableCell"
+                            android:text="Activo" />
+
+                        <LinearLayout style="@style/CyberActionCell">
+
+                            <Button
+                                style="@style/CyberEditButton"
+                                android:text="Editar" />
+
+                            <Button
+                                style="@style/CyberDeleteButton"
+                                android:text="Eliminar" />
+
+                            <Button
+                                style="@style/CyberToggleButton"
+                                android:text="Desactivar" />
+                        </LinearLayout>
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            style="@style/CyberTableCell"
+                            android:text="Loroco con queso" />
+
+                        <TextView
+                            style="@style/CyberTableCell"
+                            android:text="$0.75" />
+
+                        <TextView
+                            style="@style/CyberTableCell"
+                            android:text="Activo" />
+
+                        <LinearLayout style="@style/CyberActionCell">
+
+                            <Button
+                                style="@style/CyberEditButton"
+                                android:text="Editar" />
+
+                            <Button
+                                style="@style/CyberDeleteButton"
+                                android:text="Eliminar" />
+
+                            <Button
+                                style="@style/CyberToggleButton"
+                                android:text="Desactivar" />
+                        </LinearLayout>
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            style="@style/CyberTableCell"
+                            android:text="Chicharron" />
+
+                        <TextView
+                            style="@style/CyberTableCell"
+                            android:text="$0.65" />
+
+                        <TextView
+                            style="@style/CyberTableCell"
+                            android:text="Activo" />
+
+                        <LinearLayout style="@style/CyberActionCell">
+
+                            <Button
+                                style="@style/CyberEditButton"
+                                android:text="Editar" />
+
+                            <Button
+                                style="@style/CyberDeleteButton"
+                                android:text="Eliminar" />
+
+                            <Button
+                                style="@style/CyberToggleButton"
+                                android:text="Desactivar" />
+                        </LinearLayout>
+                    </TableRow>
+                </TableLayout>
+            </HorizontalScrollView>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
