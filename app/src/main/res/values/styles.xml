@@ -70,4 +70,54 @@
         <item name="android:background">@drawable/bg_button_outline_yellow</item>
         <item name="android:textColor">@color/cyber_yellow</item>
     </style>
+
+    <style name="CyberOrderHeader" parent="CyberTableHeader">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="CyberOrderCell" parent="CyberTableCell">
+        <item name="android:height">68dp</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="CyberOrderSubtotal" parent="CyberOrderCell">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/cyber_text</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="CyberQuantityCell">
+        <item name="android:layout_width">176dp</item>
+        <item name="android:layout_height">68dp</item>
+        <item name="android:background">@drawable/bg_table_cell</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+    </style>
+
+    <style name="CyberQtyButton">
+        <item name="android:layout_width">42dp</item>
+        <item name="android:layout_height">42dp</item>
+        <item name="android:background">@drawable/bg_qty_button</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:textColor">#FF07351F</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="CyberQtyValue">
+        <item name="android:layout_width">62dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_marginStart">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:background">@drawable/bg_qty_value</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/cyber_yellow</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

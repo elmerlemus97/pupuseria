@@ -5,15 +5,298 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_cyberpunk"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <View
+        android:id="@+id/topNeonLine"
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:background="@color/cyber_magenta"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ScrollView
+        android:id="@+id/orderScroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:paddingStart="10dp"
+        android:paddingTop="18dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="22dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topNeonLine">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtOrderTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.04"
+                android:text="ORDENAR PUPUSAS"
+                android:textAllCaps="true"
+                android:textColor="@color/cyber_cyan"
+                android:textSize="26sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtOrderSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Selecciona cantidades para preparar el pedido"
+                android:textColor="@color/cyber_text_muted"
+                android:textSize="13sp" />
+
+            <HorizontalScrollView
+                android:id="@+id/orderTableScroll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:fillViewport="true"
+                android:scrollbars="horizontal">
+
+                <TableLayout
+                    android:id="@+id/tableOrden"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:shrinkColumns="0"
+                    android:stretchColumns="0">
+
+                    <TableRow>
+
+                        <TextView
+                            style="@style/CyberOrderHeader"
+                            android:minWidth="220dp"
+                            android:text="Pupusas" />
+
+                        <TextView
+                            style="@style/CyberOrderHeader"
+                            android:minWidth="90dp"
+                            android:text="Precio" />
+
+                        <TextView
+                            style="@style/CyberOrderHeader"
+                            android:minWidth="120dp"
+                            android:text="Subtotal" />
+
+                        <TextView
+                            style="@style/CyberOrderHeader"
+                            android:minWidth="176dp"
+                            android:text="Cantidad" />
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            style="@style/CyberOrderCell"
+                            android:text="Queso" />
+
+                        <TextView
+                            style="@style/CyberOrderCell"
+                            android:gravity="center"
+                            android:text="$0.50" />
+
+                        <TextView
+                            style="@style/CyberOrderSubtotal"
+                            android:text="$1.00" />
+
+                        <LinearLayout style="@style/CyberQuantityCell">
+
+                            <Button
+                                style="@style/CyberQtyButton"
+                                android:text="-" />
+
+                            <TextView
+                                style="@style/CyberQtyValue"
+                                android:text="2" />
+
+                            <Button
+                                style="@style/CyberQtyButton"
+                                android:text="+" />
+                        </LinearLayout>
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            style="@style/CyberOrderCell"
+                            android:text="Frijol con queso" />
+
+                        <TextView
+                            style="@style/CyberOrderCell"
+                            android:gravity="center"
+                            android:text="$0.50" />
+
+                        <TextView
+                            style="@style/CyberOrderSubtotal"
+                            android:text="$0.50" />
+
+                        <LinearLayout style="@style/CyberQuantityCell">
+
+                            <Button
+                                style="@style/CyberQtyButton"
+                                android:text="-" />
+
+                            <TextView
+                                style="@style/CyberQtyValue"
+                                android:text="1" />
+
+                            <Button
+                                style="@style/CyberQtyButton"
+                                android:text="+" />
+                        </LinearLayout>
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            style="@style/CyberOrderCell"
+                            android:text="Revueltas" />
+
+                        <TextView
+                            style="@style/CyberOrderCell"
+                            android:gravity="center"
+                            android:text="$0.60" />
+
+                        <TextView
+                            style="@style/CyberOrderSubtotal"
+                            android:text="$0.00" />
+
+                        <LinearLayout style="@style/CyberQuantityCell">
+
+                            <Button
+                                style="@style/CyberQtyButton"
+                                android:text="-" />
+
+                            <TextView
+                                style="@style/CyberQtyValue"
+                                android:text="0" />
+
+                            <Button
+                                style="@style/CyberQtyButton"
+                                android:text="+" />
+                        </LinearLayout>
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            style="@style/CyberOrderCell"
+                            android:text="Loroco con queso" />
+
+                        <TextView
+                            style="@style/CyberOrderCell"
+                            android:gravity="center"
+                            android:text="$0.75" />
+
+                        <TextView
+                            style="@style/CyberOrderSubtotal"
+                            android:text="$1.50" />
+
+                        <LinearLayout style="@style/CyberQuantityCell">
+
+                            <Button
+                                style="@style/CyberQtyButton"
+                                android:text="-" />
+
+                            <TextView
+                                style="@style/CyberQtyValue"
+                                android:text="2" />
+
+                            <Button
+                                style="@style/CyberQtyButton"
+                                android:text="+" />
+                        </LinearLayout>
+                    </TableRow>
+
+                    <TableRow>
+
+                        <TextView
+                            style="@style/CyberOrderCell"
+                            android:text="Chicharron" />
+
+                        <TextView
+                            style="@style/CyberOrderCell"
+                            android:gravity="center"
+                            android:text="$0.65" />
+
+                        <TextView
+                            style="@style/CyberOrderSubtotal"
+                            android:text="$0.65" />
+
+                        <LinearLayout style="@style/CyberQuantityCell">
+
+                            <Button
+                                style="@style/CyberQtyButton"
+                                android:text="-" />
+
+                            <TextView
+                                style="@style/CyberQtyValue"
+                                android:text="1" />
+
+                            <Button
+                                style="@style/CyberQtyButton"
+                                android:text="+" />
+                        </LinearLayout>
+                    </TableRow>
+                </TableLayout>
+            </HorizontalScrollView>
+
+            <LinearLayout
+                android:id="@+id/orderSummaryPanel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:background="@drawable/bg_order_summary"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnReiniciarOrden"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_button_outline_magenta"
+                    android:minWidth="0dp"
+                    android:text="REINICIAR"
+                    android:textColor="@color/cyber_magenta"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtTotalPedido"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_marginEnd="14dp"
+                    android:layout_weight="1.2"
+                    android:gravity="center"
+                    android:text="TOTAL: $3.65"
+                    android:textColor="@color/cyber_yellow"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btnConfirmarPedido"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1.4"
+                    android:background="@drawable/bg_cyber_button"
+                    android:minWidth="0dp"
+                    android:text="CONFIRMAR"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
