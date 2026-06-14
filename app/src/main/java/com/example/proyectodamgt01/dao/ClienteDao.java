@@ -12,9 +12,11 @@ import java.util.List;
 
 @Dao
 public interface ClienteDao {
+    // Inserta cliente nuevo al confirmar un pedido.
     @Insert
     long insertar(Cliente cliente);
 
+    // Actualiza datos del cliente si ya existia por telefono.
     @Update
     void actualizar(Cliente cliente);
 
@@ -27,6 +29,7 @@ public interface ClienteDao {
     @Query("SELECT * FROM Cliente WHERE id_cliente = :idCliente LIMIT 1")
     Cliente buscarPorId(int idCliente);
 
+    // El telefono se usa como forma simple de reutilizar clientes existentes.
     @Query("SELECT * FROM Cliente WHERE telefono = :telefono LIMIT 1")
     Cliente buscarPorTelefono(String telefono);
 }

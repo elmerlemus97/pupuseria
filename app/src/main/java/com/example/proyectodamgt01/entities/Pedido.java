@@ -6,6 +6,8 @@ import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+// Entity de Room: cabecera del pedido.
+// Guarda cliente, usuario vendedor, fecha/hora, total y estado de entrega.
 @Entity(
         tableName = "Pedido",
         foreignKeys = {
@@ -28,13 +30,16 @@ import androidx.room.PrimaryKey;
         }
 )
 public class Pedido {
+    // Llave primaria autoincremental: id_pedido.
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id_pedido")
     public int idPedido;
 
+    // FK hacia Usuarios: indica quien tomo el pedido.
     @ColumnInfo(name = "usuario_id")
     public int usuarioId;
 
+    // FK hacia Cliente: indica para quien es el pedido.
     @ColumnInfo(name = "cliente_id")
     public int clienteId;
 

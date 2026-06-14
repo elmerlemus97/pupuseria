@@ -22,6 +22,16 @@ import com.example.proyectodamgt01.entities.Usuario;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/*
+ * AppDatabase es la clase central de Room.
+ *
+ * Aqui se registran:
+ * - Todas las entidades/tablas.
+ * - La version de la base.
+ * - Los DAO disponibles.
+ *
+ * SQLite real se crea en el dispositivo con el nombre pupuseria_db.
+ */
 @Database(
         entities = {
                 Producto.class,
@@ -35,7 +45,11 @@ import java.util.concurrent.Executors;
 )
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "pupuseria_db";
+
+    // INSTANCE mantiene una sola conexion Room durante la vida de la app.
     private static volatile AppDatabase INSTANCE;
+
+    // Executor para precargar datos sin bloquear la UI.
     private static final ExecutorService DATABASE_EXECUTOR = Executors.newSingleThreadExecutor();
 
     public abstract ProductoDao productoDao();

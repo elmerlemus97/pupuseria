@@ -12,18 +12,23 @@ import java.util.List;
 
 @Dao
 public interface ProductoDao {
+    // Inserta una pupusa/producto nuevo y devuelve su id generado.
     @Insert
     long insertar(Producto producto);
 
+    // Actualiza nombre, precio o estado de un producto existente.
     @Update
     void actualizar(Producto producto);
 
+    // Elimina un producto si no esta protegido por relaciones de pedidos.
     @Delete
     void eliminar(Producto producto);
 
+    // Lista todo el catalogo, activos e inactivos, para el CRUD.
     @Query("SELECT * FROM Producto ORDER BY nombre ASC")
     List<Producto> listarTodos();
 
+    // Lista solo productos activos para la pantalla Ordenar.
     @Query("SELECT * FROM Producto WHERE estado = 1 ORDER BY nombre ASC")
     List<Producto> listarActivos();
 
@@ -33,6 +38,7 @@ public interface ProductoDao {
     @Query("UPDATE Producto SET estado = :estado WHERE id_producto = :idProducto")
     void cambiarEstado(int idProducto, int estado);
 
+    // Se usa para saber si hay que precargar pupusas iniciales.
     @Query("SELECT COUNT(*) FROM Producto")
     int contar();
 }

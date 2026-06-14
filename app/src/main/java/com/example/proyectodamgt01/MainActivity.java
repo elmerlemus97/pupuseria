@@ -40,22 +40,39 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/*
+ * MainActivity funciona como controlador principal de la app.
+ *
+ * En este proyecto usamos XML + Java + Room:
+ * - Los layouts definen la vista.
+ * - MainActivity conecta botones, formularios y tablas.
+ * - Los DAO hacen las operaciones contra Room/SQLite.
+ *
+ * Por ahora se usa una sola Activity que cambia de pantalla con setContentView().
+ * Esto mantiene el proyecto simple para clase, aunque mas adelante se podria separar
+ * en Activities o Fragments por modulo.
+ */
 public class MainActivity extends AppCompatActivity {
+    // Claves usadas para guardar la sesion local con SharedPreferences.
     private static final String PREFS_NAME = "sesion_pupuseria";
     private static final String KEY_USER_ID = "usuario_id";
     private static final String KEY_USERNAME = "username";
     private static final String KEY_REMEMBER = "recordar";
 
+    // Accesos globales a base de datos, preferencias y tareas en segundo plano.
     private AppDatabase db;
     private SharedPreferences prefs;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private final NumberFormat currency = NumberFormat.getCurrencyInstance(Locale.US);
 
+    // Estado temporal de la sesion y de formularios en modo edicion.
     private int currentUserId = -1;
     private String currentUsername = "";
     private Integer productoEditandoId = null;
     private Integer usuarioEditandoId = null;
     private Integer pedidoEditandoId = null;
+
+    // Mapa usado en la pantalla Ordenar: id_producto -> cantidad seleccionada.
     private final Map<Integer, Integer> cantidadesPedido = new HashMap<>();
     private List<Producto> productosOrden = new ArrayList<>();
 
@@ -64,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
 
+        // Room se obtiene como singleton para toda la app.
         db = AppDatabase.getInstance(this);
         prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 
@@ -81,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void ensureDefaultData() {
         executor.execute(() -> {
+            // Si la tabla Producto esta vacia, se cargan las pupusas base.
             if (db.productoDao().contar() == 0) {
                 db.productoDao().insertar(new Producto("Queso", 0.50, 1));
                 db.productoDao().insertar(new Producto("Frijol con queso", 0.50, 1));
@@ -97,11 +116,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setScreen(int layoutId) {
+        // Cambia el XML visible. Despues de llamar este metodo hay que volver a buscar
+        // los botones/campos con findViewById(), porque la vista anterior ya no existe.
         setContentView(layoutId);
         applyInsets();
     }
 
     private void applyInsets() {
+        // Ajusta el padding para que el contenido no choque con barras del sistema.
         View main = findViewById(R.id.main);
         if (main == null) {
             return;
@@ -115,6 +137,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupNavigation() {
+        // La barra superior se incluye en varias pantallas. Como no todas la tienen,
+        // se validan nulls antes de asignar los listeners.
         View navMenu = findViewById(R.id.navMenu);
         View navOrder = findViewById(R.id.navOrder);
         View navPending = findViewById(R.id.navPending);
@@ -129,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showLogin() {
+        // Pantalla inicial: valida usuario activo y password desde Room.
         setScreen(R.layout.login);
 
         EditText edtUsuario = findViewById(R.id.edtUsuario);
@@ -147,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             executor.execute(() -> {
+                // Las consultas a Room se ejecutan fuera del hilo principal.
                 Usuario usuario = db.usuarioDao().login(username, password);
                 runOnUiThread(() -> {
                     if (usuario == null) {
@@ -158,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
                     currentUsername = usuario.username;
 
                     boolean recordar = ((android.widget.CheckBox) findViewById(R.id.chkRecordarSesion)).isChecked();
+                    // SharedPreferences guarda la sesion solo si el usuario marca recordar.
                     prefs.edit()
                             .putBoolean(KEY_REMEMBER, recordar)
                             .putInt(KEY_USER_ID, usuario.idUsuario)
@@ -174,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showNuevoUsuario() {
+        // Registro publico: permite solicitar acceso, pero no activa al usuario.
         setScreen(R.layout.nuevo_usuario);
 
         EditText edtUsername = findViewById(R.id.edtNuevoUsername);
@@ -213,6 +241,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showUsuarioPendienteDialog() {
+        // Dialogo informativo tras crear un usuario inactivo.
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_usuario_pendiente, null);
         AlertDialog dialog = new AlertDialog.Builder(this).setView(dialogView).create();
         Button btnAceptar = dialogView.findViewById(R.id.btnAceptarUsuarioPendiente);
@@ -224,6 +253,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showMenu() {
+        // Modulo de mantenimiento de productos/pupusas.
         productoEditandoId = null;
         setScreen(R.layout.menu);
         setupNavigation();
@@ -231,6 +261,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupProductosCrud() {
+        // Conecta formulario, buscador y tabla del CRUD de productos.
         EditText edtNombre = findViewById(R.id.edtNombreProducto);
         EditText edtPrecio = findViewById(R.id.edtPrecioProducto);
         EditText edtBuscar = findViewById(R.id.edtBuscarProducto);
@@ -242,6 +273,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void guardarProducto(EditText edtNombre, EditText edtPrecio) {
+        // Inserta un producto nuevo o actualiza el que se selecciono con editar.
         String nombre = textOf(edtNombre);
         String precioTexto = textOf(edtPrecio);
 
@@ -260,8 +292,10 @@ public class MainActivity extends AppCompatActivity {
 
         executor.execute(() -> {
             if (productoEditandoId == null) {
+                // Nuevo producto: por defecto nace activo.
                 db.productoDao().insertar(new Producto(nombre, precio, 1));
             } else {
+                // Producto existente: se conserva su estado y se actualizan datos basicos.
                 Producto producto = db.productoDao().buscarPorId(productoEditandoId);
                 if (producto != null) {
                     producto.nombre = nombre;
@@ -281,6 +315,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void cargarProductos(String filtro) {
+        // Carga productos desde Room y aplica el filtro de busqueda en memoria.
         executor.execute(() -> {
             List<Producto> productos = db.productoDao().listarTodos();
             List<Producto> filtrados = new ArrayList<>();
@@ -294,6 +329,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void renderProductos(List<Producto> productos) {
+        // Redibuja la tabla del menu con los productos obtenidos de SQLite.
         TableLayout table = findViewById(R.id.tablePupusas);
         if (table == null) return;
         clearTableBody(table);
@@ -313,12 +349,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void editarProducto(Producto producto) {
+        // Carga el producto seleccionado en el formulario superior.
         productoEditandoId = producto.idProducto;
         ((EditText) findViewById(R.id.edtNombreProducto)).setText(producto.nombre);
         ((EditText) findViewById(R.id.edtPrecioProducto)).setText(String.valueOf(producto.precio));
     }
 
     private void eliminarProducto(Producto producto) {
+        // Si el producto ya fue usado en pedidos, la FK impide eliminarlo.
         executor.execute(() -> {
             try {
                 db.productoDao().eliminar(producto);
@@ -333,6 +371,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void cambiarEstadoProducto(Producto producto) {
+        // Alterna entre activo/inactivo. Los inactivos se muestran con fila roja.
         executor.execute(() -> {
             db.productoDao().cambiarEstado(producto.idProducto, producto.estado == 1 ? 0 : 1);
             runOnUiThread(() -> cargarProductos(""));
@@ -340,6 +379,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showUsuarios() {
+        // Modulo de administracion de usuarios y aprobacion de accesos.
         usuarioEditandoId = null;
         setScreen(R.layout.usuarios);
         setupNavigation();
@@ -347,6 +387,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupUsuariosCrud() {
+        // Conecta formulario, buscador y tabla del CRUD de usuarios.
         EditText edtUsername = findViewById(R.id.edtUsernameAdmin);
         EditText edtPassword = findViewById(R.id.edtPasswordAdmin);
         EditText edtBuscar = findViewById(R.id.edtBuscarUsuario);
@@ -358,6 +399,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void guardarUsuario(EditText edtUsername, EditText edtPassword) {
+        // Usuarios creados por admin tambien nacen inactivos para aprobarlos manualmente.
         String username = textOf(edtUsername);
         String password = textOf(edtPassword);
 
@@ -407,6 +449,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void renderUsuarios(List<Usuario> usuarios) {
+        // Renderiza usuarios desde SQLite. estado=0 se pinta como fila inactiva.
         TableLayout table = findViewById(R.id.tableUsuarios);
         if (table == null) return;
         clearTableBody(table);
@@ -432,6 +475,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void eliminarUsuario(Usuario usuario) {
+        // Proteccion basica: no permitir que el usuario conectado se elimine a si mismo.
         if (usuario.idUsuario == currentUserId) {
             toast("No puedes eliminar tu propia sesion");
             return;
@@ -451,6 +495,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void cambiarEstadoUsuario(Usuario usuario) {
+        // Proteccion basica: no permitir desactivar la sesion actual.
         if (usuario.idUsuario == currentUserId) {
             toast("No puedes desactivar tu propia sesion");
             return;
@@ -463,12 +508,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showOrdenar() {
+        // Inicia una orden nueva, limpiando cantidades y pedido en edicion.
         pedidoEditandoId = null;
         cantidadesPedido.clear();
         abrirPantallaOrden();
     }
 
     private void editarPedido(PedidoConDetalles pedido) {
+        // Reabre una orden pendiente con sus cantidades para modificarla.
         pedidoEditandoId = pedido.pedido.idPedido;
         cantidadesPedido.clear();
 
@@ -482,6 +529,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void abrirPantallaOrden() {
+        // Configura botones de la pantalla Ordenar y carga productos activos.
         setScreen(R.layout.ordenar);
         setupNavigation();
 
@@ -497,6 +545,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void cargarProductosOrden() {
+        // En ordenes solo se venden productos activos.
         executor.execute(() -> {
             productosOrden = db.productoDao().listarActivos();
             runOnUiThread(this::renderOrden);
@@ -504,6 +553,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void renderOrden() {
+        // Redibuja la tabla de la orden y recalcula subtotales/total.
         TableLayout table = findViewById(R.id.tableOrden);
         if (table == null) return;
         clearTableBody(table);
@@ -525,6 +575,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void confirmarPedido() {
+        // Abre el dialogo donde se capturan datos del cliente antes de guardar.
         double total = calcularTotalPedidoActual();
         if (total <= 0) {
             toast("Selecciona al menos una pupusa");
@@ -549,6 +600,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void guardarPedido(AlertDialog dialog, EditText edtNombre, EditText edtTelefono) {
+        // Guarda cabecera Pedido y sus DetallePedido. Si es edicion, reemplaza detalles.
         String nombre = textOf(edtNombre);
         String telefono = textOf(edtTelefono);
         if (nombre.isEmpty() || telefono.isEmpty()) {
@@ -560,8 +612,10 @@ public class MainActivity extends AppCompatActivity {
             Cliente cliente = db.clienteDao().buscarPorTelefono(telefono);
             int clienteId;
             if (cliente == null) {
+                // Cliente nuevo.
                 clienteId = (int) db.clienteDao().insertar(new Cliente(nombre, telefono, ""));
             } else {
+                // Cliente existente: se actualiza el nombre por si cambio.
                 cliente.nombre = nombre;
                 db.clienteDao().actualizar(cliente);
                 clienteId = cliente.idCliente;
@@ -573,8 +627,10 @@ public class MainActivity extends AppCompatActivity {
 
             int pedidoId;
             if (pedidoEditandoId == null) {
+                // Pedido nuevo en estado 0: Pendiente.
                 pedidoId = (int) db.pedidoDao().insertar(new Pedido(currentUserId, clienteId, fecha, hora, total, 0, 0));
             } else {
+                // Pedido existente: actualiza cabecera y recrea detalles.
                 Pedido pedido = db.pedidoDao().buscarPorId(pedidoEditandoId);
                 pedido.usuarioId = currentUserId;
                 pedido.clienteId = clienteId;
@@ -607,6 +663,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showPendientes() {
+        // Lista pedidos con estado_entrega = 0.
         setScreen(R.layout.pendientes);
         setupNavigation();
 
@@ -616,6 +673,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showEntregados() {
+        // Lista pedidos con estado_entrega = 1.
         setScreen(R.layout.entregados);
         setupNavigation();
 
@@ -625,6 +683,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void cargarPedidos(int estadoEntrega, String filtroCliente) {
+        // Obtiene pedidos con Cliente, Usuario y Detalles usando relaciones de Room.
         executor.execute(() -> {
             List<PedidoConDetalles> pedidos = db.pedidoDao().listarConDetallesPorEstado(estadoEntrega);
             List<PedidoConDetalles> filtrados = new ArrayList<>();
@@ -639,6 +698,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void renderPedidos(int estadoEntrega, List<PedidoConDetalles> pedidos) {
+        // Construye dinamicamente las tarjetas de pendientes o entregados.
         LinearLayout contenedor = findViewById(estadoEntrega == 0 ? R.id.listaPedidosPendientes : R.id.listaPedidosEntregados);
         if (contenedor == null) return;
         contenedor.removeAllViews();
@@ -656,6 +716,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private LinearLayout pedidoCard(PedidoConDetalles pedido, int estadoEntrega) {
+        // Crea una tarjeta visual de pedido con datos de cliente, detalle y acciones.
         LinearLayout card = new LinearLayout(this);
         card.setOrientation(LinearLayout.VERTICAL);
         card.setBackgroundResource(estadoEntrega == 0 ? R.drawable.bg_pending_card : R.drawable.bg_delivered_card);
@@ -698,6 +759,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Button wideActionButton(String text, int background, int color, Runnable action) {
+        // Boton reutilizable para acciones grandes de las tarjetas de pedido.
         Button button = new Button(this);
         button.setText(text);
         button.setTextColor(getColor(color));
@@ -713,6 +775,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void eliminarPedido(int idPedido) {
+        // Elimina el pedido. Los detalles se borran por CASCADE en la relacion Room.
         executor.execute(() -> {
             db.pedidoDao().eliminarPorId(idPedido);
             runOnUiThread(() -> {
@@ -723,6 +786,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private TableLayout detallesTable(List<DetalleConProducto> detalles) {
+        // Tabla interna de cada tarjeta: producto, cantidad y subtotal.
         TableLayout table = new TableLayout(this);
         table.setStretchAllColumns(true);
         table.addView(pendingHeaderRow());
@@ -741,6 +805,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void cambiarEstadoPedido(int idPedido, int nuevoEstado) {
+        // 0 = pendiente, 1 = entregado. Cambiar estado mueve el pedido entre pantallas.
         executor.execute(() -> {
             db.pedidoDao().cambiarEstadoEntrega(idPedido, nuevoEstado);
             runOnUiThread(() -> {
@@ -752,6 +817,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private double calcularTotalPedidoActual() {
+        // Suma precio * cantidad de los productos seleccionados en la orden actual.
         double total = 0;
         for (Producto producto : productosOrden) {
             total += producto.precio * cantidadesPedido.getOrDefault(producto.idProducto, 0);
@@ -760,6 +826,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void renderResumenDialog(LinearLayout container) {
+        // Llena el dialogo de confirmacion con los productos que tienen cantidad > 0.
         container.removeAllViews();
         for (Producto producto : productosOrden) {
             int cantidad = cantidadesPedido.getOrDefault(producto.idProducto, 0);
@@ -775,6 +842,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private LinearLayout productOrderCell(Producto producto) {
+        // Celda compuesta: nombre del producto y precio debajo.
         LinearLayout cell = new LinearLayout(this);
         cell.setOrientation(LinearLayout.VERTICAL);
         cell.setBackgroundResource(R.drawable.bg_table_cell);
@@ -786,6 +854,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private TextView orderSubtotalCell(String text) {
+        // Celda de subtotal dentro de la tabla Ordenar.
         TextView cell = new TextView(this);
         cell.setText(text);
         cell.setTextColor(getColor(R.color.cyber_text));
@@ -798,6 +867,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private LinearLayout quantityCell(Producto producto, int cantidad) {
+        // Celda con botones - y +. Cada clic actualiza el mapa cantidadesPedido.
         LinearLayout cell = new LinearLayout(this);
         cell.setGravity(android.view.Gravity.CENTER);
         cell.setOrientation(LinearLayout.HORIZONTAL);
@@ -826,6 +896,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private Button qtyButton(String text) {
+        // Boton circular reutilizado por los controles de cantidad.
         Button button = new Button(this);
         button.setText(text);
         button.setTextSize(24);
@@ -839,6 +910,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private TextView qtyValue(String text) {
+        // Caja central que muestra la cantidad seleccionada.
         TextView value = new TextView(this);
         value.setText(text);
         value.setTextColor(getColor(R.color.cyber_yellow));
@@ -853,6 +925,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private TextView cell(String text, boolean activo) {
+        // Celda generica para tablas CRUD. Si activo=false usa fondo rojo.
         TextView cell = new TextView(this);
         cell.setText(text);
         cell.setTextSize(14);
@@ -866,6 +939,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private LinearLayout actionCell(Runnable onEdit, Runnable onDelete, Runnable onToggle) {
+        // Grupo de acciones reutilizable: editar, eliminar y activar/desactivar.
         LinearLayout actions = new LinearLayout(this);
         actions.setOrientation(LinearLayout.HORIZONTAL);
         actions.setGravity(android.view.Gravity.CENTER_VERTICAL);
@@ -880,6 +954,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private ImageButton iconButton(int icon, int background, Runnable action) {
+        // Crea un ImageButton compacto para las tablas CRUD.
         ImageButton button = new ImageButton(this);
         button.setImageResource(icon);
         button.setBackgroundResource(background);
@@ -893,6 +968,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private TableRow pendingHeaderRow() {
+        // Encabezado para tablas internas de pedidos.
         TableRow row = new TableRow(this);
         row.addView(pendingHeader("Pedido"));
         row.addView(pendingHeader("Cant."));
@@ -901,6 +977,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private TextView pendingHeader(String text) {
+        // Celda de encabezado para detalle de pedido.
         TextView view = new TextView(this);
         view.setText(text);
         view.setTextSize(13);
@@ -914,6 +991,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private TextView pendingCell(String text, boolean center) {
+        // Celda de datos para detalle de pedido.
         TextView view = new TextView(this);
         view.setText(text);
         view.setTextSize(13);
@@ -926,6 +1004,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private TextView metaLabel(String text) {
+        // Etiqueta para fecha, hora o usuario dentro de tarjetas.
         TextView view = label(text, 12, R.color.cyber_text, false);
         view.setBackgroundResource(R.drawable.bg_pending_meta);
         view.setPadding(dp(10), dp(7), dp(10), dp(7));
@@ -939,6 +1018,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private TextView label(String text, int sp, int color, boolean bold) {
+        // Helper para crear TextView desde Java sin repetir configuracion.
         TextView label = new TextView(this);
         label.setText(text);
         label.setTextSize(sp);
@@ -948,30 +1028,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private TextView weightedLabel(String text, float weight) {
+        // TextView con peso usado en filas del dialogo de confirmacion.
         TextView view = label(text, 14, R.color.white, false);
         view.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, weight));
         return view;
     }
 
     private void clearTableBody(TableLayout table) {
+        // Borra todas las filas excepto la primera, que corresponde al encabezado.
         while (table.getChildCount() > 1) {
             table.removeViewAt(1);
         }
     }
 
     private String textOf(EditText editText) {
+        // Obtiene texto limpio de un EditText.
         return editText.getText().toString().trim();
     }
 
     private void toast(String message) {
+        // Mensajes cortos para retroalimentacion de acciones.
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     private int dp(int value) {
+        // Convierte dp a pixeles para crear vistas desde Java.
         return (int) (value * getResources().getDisplayMetrics().density);
     }
 
     private android.text.TextWatcher simpleTextWatcher(Runnable afterChanged) {
+        // TextWatcher simple: ejecuta una accion despues de escribir en un buscador.
         return new android.text.TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
