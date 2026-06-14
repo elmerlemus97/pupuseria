@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Alerta mostrada despues de registrar un usuario con estado 0: Inactivo. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialogUsuarioPendiente"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="18dp"
+    android:background="@drawable/bg_register_alert"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txtDialogTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Solicitud enviada"
+        android:textAlignment="center"
+        android:textColor="@color/cyber_yellow"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txtDialogMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="Tu usuario fue registrado como inactivo. El administrador dara el acceso final para ingresar a la plataforma."
+        android:textAlignment="center"
+        android:textColor="@color/cyber_text"
+        android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/btnAceptarUsuarioPendiente"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="18dp"
+        android:background="@drawable/bg_cyber_button"
+        android:text="ACEPTAR"
+        android:textColor="@color/black"
+        android:textStyle="bold" />
+</LinearLayout>

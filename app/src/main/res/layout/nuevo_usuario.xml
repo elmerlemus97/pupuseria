@@ -5,15 +5,171 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_cyberpunk"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <!-- Linea neon superior para mantener la identidad visual del sistema. -->
+    <View
+        android:id="@+id/topNeonLine"
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:background="@color/cyber_magenta"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ScrollView
+        android:id="@+id/registerScroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:paddingStart="24dp"
+        android:paddingTop="32dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topNeonLine">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <!-- Encabezado de la pantalla de registro de usuario. -->
+            <TextView
+                android:id="@+id/txtRegisterTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:letterSpacing="0.04"
+                android:text="NUEVO USUARIO"
+                android:textAlignment="center"
+                android:textColor="@color/cyber_cyan"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtRegisterSubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Solicita acceso a la plataforma"
+                android:textAlignment="center"
+                android:textColor="@color/cyber_text_muted"
+                android:textSize="14sp" />
+
+            <!-- Formulario de registro. El estado se guardara como 0: Inactivo. -->
+            <LinearLayout
+                android:id="@+id/registerPanel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/bg_register_panel"
+                android:elevation="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtAccessTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="DATOS DE ACCESO"
+                    android:textColor="@color/cyber_yellow"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/edtNuevoUsername"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="18dp"
+                    android:background="@drawable/bg_cyber_input"
+                    android:hint="Usuario"
+                    android:inputType="textPersonName"
+                    android:maxLines="1"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:textColor="@color/cyber_text"
+                    android:textColorHint="@color/cyber_text_muted"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/edtNuevaPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="14dp"
+                    android:background="@drawable/bg_cyber_input"
+                    android:hint="Contrasena"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:textColor="@color/cyber_text"
+                    android:textColorHint="@color/cyber_text_muted"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/edtConfirmarPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="14dp"
+                    android:background="@drawable/bg_cyber_input"
+                    android:hint="Confirmar contrasena"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:paddingStart="14dp"
+                    android:paddingEnd="14dp"
+                    android:textColor="@color/cyber_text"
+                    android:textColorHint="@color/cyber_text_muted"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/txtEstadoUsuario"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:background="@drawable/bg_status_inactive"
+                    android:paddingStart="14dp"
+                    android:paddingTop="6dp"
+                    android:paddingEnd="14dp"
+                    android:paddingBottom="6dp"
+                    android:text="Estado por defecto: Inactivo"
+                    android:textColor="#FFFF2B5D"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtAdminNotice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="El administrador debe aprobar tu cuenta antes de ingresar."
+                    android:textColor="@color/cyber_text_muted"
+                    android:textSize="13sp" />
+
+                <Button
+                    android:id="@+id/btnRegistrarUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/bg_cyber_button"
+                    android:text="REGISTRAR"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btnVolverLogin"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Volver al login"
+                    android:textColor="@color/cyber_cyan"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
